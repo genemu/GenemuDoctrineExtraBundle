@@ -3,9 +3,9 @@ DoctrineExtraBundle
 
 ## Installation
 
-### Installation using the bin/vendor method
+### Installation using the `bin/vendor` method
 
-If you're using the bin/vendors method to manage your vendor libraries, add the following entries to the deps in the root of your project file:
+If you're using the `bin/vendors` method to manage your vendor libraries, add the following entries to the deps in the root of your project file:
 
     [GenemuDoctrineExtraBundle]
         git=http://github.com/genemu/GenemuDoctrineExtraBundle.git
