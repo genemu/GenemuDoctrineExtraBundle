@@ -18,6 +18,6 @@ class RoutingPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $container->setParameter('router.class', 'Genemu\Bundle\DoctrineExtraBundle\Routing\Router');
+        //$container->setParameter('router.class', 'Genemu\Bundle\DoctrineExtraBundle\Routing\Router');
     }
 }

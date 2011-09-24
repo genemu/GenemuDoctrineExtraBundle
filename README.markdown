@@ -34,3 +34,15 @@ file is usually located at `app/AppKernel`:
             new Genemu\Bundle\DoctrineExtraBundle\GenemuDoctrineExtraBundle(),
         );
     )
+
+### Initialize database
+
+To create Bundle, Controller, Method and View, intilialize fixtures in your database.
+
+    ./app/console doctrine:database:create
+    ./app/console doctrine:schema:create
+
+This command save in your database all Bundles, Controllers, Methods and Views
+
+    ./app/console router:fixtures:update
+
