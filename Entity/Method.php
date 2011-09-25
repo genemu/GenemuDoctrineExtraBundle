@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Method
- * 
+ *
  * @ORM\Table(
  *     name="genemu_doctrine_extra_method"
  * )
@@ -28,14 +28,14 @@ class Method extends Entity
 {
     /**
      * @var string $name
-     * 
+     *
      * @ORM\Column(type="string", length="128")
      */
     protected $name;
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Controller $controller
-     * 
+     *
      * @ORM\ManyToOne(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Controller",
      *     inversedBy="methods"
@@ -49,7 +49,7 @@ class Method extends Entity
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
-     * 
+     *
      * @ORM\OneToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Routing",
      *     mappedBy="method",
@@ -68,7 +68,7 @@ class Method extends Entity
 
     /**
      * get name
-     * 
+     *
      * @return string $name
      */
     public function getName()
@@ -78,7 +78,7 @@ class Method extends Entity
 
     /**
      * set name
-     * 
+     *
      * @param string $name
      */
     public function setName($name)
@@ -88,7 +88,7 @@ class Method extends Entity
 
     /**
      * set controller
-     * 
+     *
      * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Controller $controller
      */
     public function setController(Controller $controller)
@@ -98,7 +98,7 @@ class Method extends Entity
 
     /**
      * get controller
-     * 
+     *
      * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Controller $controller
      */
     public function getController()
@@ -108,7 +108,7 @@ class Method extends Entity
 
     /**
      * add routings
-     * 
+     *
      * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
      */
     public function addRoutings(Routing $routings)
@@ -118,7 +118,7 @@ class Method extends Entity
 
     /**
      * get routings
-     * 
+     *
      * @return Doctrine\Common\Collections\ArrayCollection $routings
      */
     public function getRoutings()
@@ -126,4 +126,16 @@ class Method extends Entity
         return $this->routings;
     }
 
+    /**
+     * toString
+     *
+     * @return string controller name
+     */
+    public function __toString()
+    {
+        $controller = $this->getController();
+        $bundle = $controller->getBundle();
+
+        return $bundle->getName().':'.$controller->getName().':'.$this->name;
+    }
 }

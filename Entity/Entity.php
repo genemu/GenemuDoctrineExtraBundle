@@ -16,14 +16,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Entity
- * 
+ *
  * @ORM\MappedSuperclass()
  */
 abstract class Entity
 {
     /**
      * @var integer $id
-     * 
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -32,7 +32,7 @@ abstract class Entity
 
     /**
      * @var datetime $createdAt
-     * 
+     *
      * @ORM\Column(name="created_at", type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
@@ -40,7 +40,7 @@ abstract class Entity
 
     /**
      * @var datetime $updatedAt
-     * 
+     *
      * @ORM\Column(name="updated_at", type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
@@ -48,7 +48,7 @@ abstract class Entity
 
     /**
      * get id
-     * 
+     *
      * @return integer $id
      */
     public function getId()
@@ -58,7 +58,7 @@ abstract class Entity
 
     /**
      * get createdAt
-     * 
+     *
      * @return \DateTime $createdAt
      */
     public function getCreatedAt()
@@ -68,12 +68,11 @@ abstract class Entity
 
     /**
      * get updatedAt
-     * 
+     *
      * @return \DateTime $updatedAt
      */
     public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
-
 }

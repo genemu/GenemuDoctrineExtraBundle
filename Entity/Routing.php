@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Routing
- * 
+ *
  * @ORM\Table(
  *     name="genemu_doctrine_extra_routing"
  * )
@@ -28,28 +28,28 @@ class Routing extends Entity
 {
     /**
      * @var string $name
-     * 
+     *
      * @ORM\Column(type="string", length="128", unique="true")
      */
     protected $name;
 
     /**
      * @var string $pattern
-     * 
+     *
      * @ORM\Column(type="string", length="512", unique="true")
      */
     protected $pattern;
 
     /**
      * @var integer $ordering
-     * 
+     *
      * @ORM\Column(nullable="true", type="integer")
      */
     protected $ordering;
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter $routingparameters
-     * 
+     *
      * @ORM\ManyToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter",
      *     inversedBy="routings"
@@ -70,7 +70,7 @@ class Routing extends Entity
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Method $method
-     * 
+     *
      * @ORM\ManyToOne(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Method",
      *     inversedBy="routings"
@@ -83,6 +83,20 @@ class Routing extends Entity
     protected $method;
 
     /**
+     * @var Genemu\Bundle\DoctrineExtraBundle\Entity\View $view
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\View",
+     *     inversedBy="routings"
+     * )
+     * @ORM\JoinColumn(
+     *     name="view_id",
+     *     referencedColumnName="id"
+     * )
+     */
+    protected $view;
+
+    /**
      * Construct
      */
     public function __construct()
@@ -92,7 +106,7 @@ class Routing extends Entity
 
     /**
      * get name
-     * 
+     *
      * @return string $name
      */
     public function getName()
@@ -102,7 +116,7 @@ class Routing extends Entity
 
     /**
      * set name
-     * 
+     *
      * @param string $name
      */
     public function setName($name)
@@ -112,7 +126,7 @@ class Routing extends Entity
 
     /**
      * get pattern
-     * 
+     *
      * @return string $pattern
      */
     public function getPattern()
@@ -122,7 +136,7 @@ class Routing extends Entity
 
     /**
      * set pattern
-     * 
+     *
      * @param string $pattern
      */
     public function setPattern($pattern)
@@ -132,7 +146,7 @@ class Routing extends Entity
 
     /**
      * get ordering
-     * 
+     *
      * @return integer $ordering
      */
     public function getOrdering()
@@ -142,7 +156,7 @@ class Routing extends Entity
 
     /**
      * set ordering
-     * 
+     *
      * @param integer $ordering
      */
     public function setOrdering($ordering)
@@ -152,7 +166,7 @@ class Routing extends Entity
 
     /**
      * add routingparameters
-     * 
+     *
      * @param Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter $routingparameters
      */
     public function addRoutingparameters(RoutingParameter $routingparameters)
@@ -162,7 +176,7 @@ class Routing extends Entity
 
     /**
      * get routingparameters
-     * 
+     *
      * @return Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter $routingparameters
      */
     public function getRoutingparameters()
@@ -172,7 +186,7 @@ class Routing extends Entity
 
     /**
      * set method
-     * 
+     *
      * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Method $method
      */
     public function setMethod(Method $method)
@@ -182,7 +196,7 @@ class Routing extends Entity
 
     /**
      * get method
-     * 
+     *
      * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Method $method
      */
     public function getMethod()
@@ -190,4 +204,23 @@ class Routing extends Entity
         return $this->method;
     }
 
+    /**
+     * set view
+     *
+     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\View $view
+     */
+    public function setView(View $view)
+    {
+        $this->view = $view;
+    }
+
+    /**
+     * get view
+     *
+     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\View $view
+     */
+    public function getView()
+    {
+        return $this->view;
+    }
 }

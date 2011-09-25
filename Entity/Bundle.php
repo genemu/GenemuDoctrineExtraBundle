@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle
- * 
+ *
  * @ORM\Table(
  *     name="genemu_doctrine_extra_bundle"
  * )
@@ -28,14 +28,14 @@ class Bundle extends Entity
 {
     /**
      * @var string $name
-     * 
+     *
      * @ORM\Column(type="string", length="128", unique="true")
      */
     protected $name;
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Controller $controllers
-     * 
+     *
      * @ORM\OneToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Controller",
      *     mappedBy="bundle",
@@ -46,7 +46,7 @@ class Bundle extends Entity
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\View $views
-     * 
+     *
      * @ORM\OneToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\View",
      *     mappedBy="bundle",
@@ -66,7 +66,7 @@ class Bundle extends Entity
 
     /**
      * get name
-     * 
+     *
      * @return string $name
      */
     public function getName()
@@ -76,7 +76,7 @@ class Bundle extends Entity
 
     /**
      * set name
-     * 
+     *
      * @param string $name
      */
     public function setName($name)
@@ -86,7 +86,7 @@ class Bundle extends Entity
 
     /**
      * add controllers
-     * 
+     *
      * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Controller $controllers
      */
     public function addControllers(Controller $controllers)
@@ -96,7 +96,7 @@ class Bundle extends Entity
 
     /**
      * get controllers
-     * 
+     *
      * @return Doctrine\Common\Collections\ArrayCollection $controllers
      */
     public function getControllers()
@@ -106,7 +106,7 @@ class Bundle extends Entity
 
     /**
      * add views
-     * 
+     *
      * @param Genemu\Bundle\DoctrineExtraBundle\Entity\View $views
      */
     public function addViews(View $views)
@@ -116,12 +116,11 @@ class Bundle extends Entity
 
     /**
      * get views
-     * 
+     *
      * @return Doctrine\Common\Collections\ArrayCollection $views
      */
     public function getViews()
     {
         return $this->views;
     }
-
 }

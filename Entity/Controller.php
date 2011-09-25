@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Controller
- * 
+ *
  * @ORM\Table(
  *     name="genemu_doctrine_extra_controller"
  * )
@@ -28,14 +28,14 @@ class Controller extends Entity
 {
     /**
      * @var string $name
-     * 
+     *
      * @ORM\Column(type="string", length="128")
      */
     protected $name;
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle $bundle
-     * 
+     *
      * @ORM\ManyToOne(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle",
      *     inversedBy="controllers"
@@ -49,7 +49,7 @@ class Controller extends Entity
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Method $methods
-     * 
+     *
      * @ORM\OneToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Method",
      *     mappedBy="controller",
@@ -68,7 +68,7 @@ class Controller extends Entity
 
     /**
      * get name
-     * 
+     *
      * @return string $name
      */
     public function getName()
@@ -78,7 +78,7 @@ class Controller extends Entity
 
     /**
      * set name
-     * 
+     *
      * @param string $name
      */
     public function setName($name)
@@ -88,7 +88,7 @@ class Controller extends Entity
 
     /**
      * set bundle
-     * 
+     *
      * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle $bundle
      */
     public function setBundle(Bundle $bundle)
@@ -98,7 +98,7 @@ class Controller extends Entity
 
     /**
      * get bundle
-     * 
+     *
      * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle $bundle
      */
     public function getBundle()
@@ -108,7 +108,7 @@ class Controller extends Entity
 
     /**
      * add methods
-     * 
+     *
      * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Method $methods
      */
     public function addMethods(Method $methods)
@@ -118,12 +118,11 @@ class Controller extends Entity
 
     /**
      * get methods
-     * 
+     *
      * @return Doctrine\Common\Collections\ArrayCollection $methods
      */
     public function getMethods()
     {
         return $this->methods;
     }
-
 }

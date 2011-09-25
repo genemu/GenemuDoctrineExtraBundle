@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter
- * 
+ *
  * @ORM\Table(
  *     name="genemu_doctrine_extra_routingparameter"
  * )
@@ -28,28 +28,28 @@ class RoutingParameter extends Entity
 {
     /**
      * @var string $name
-     * 
+     *
      * @ORM\Column(type="string", length="128")
      */
     protected $name;
 
     /**
      * @var string $defaultValue
-     * 
+     *
      * @ORM\Column(nullable="true", name="default_value", type="string", length="128")
      */
     protected $defaultValue;
 
     /**
      * @var string $requirement
-     * 
+     *
      * @ORM\Column(nullable="true", type="string", length="128")
      */
     protected $requirement;
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
-     * 
+     *
      * @ORM\ManyToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Routing",
      *     mappedBy="routingparameters"
@@ -67,7 +67,7 @@ class RoutingParameter extends Entity
 
     /**
      * get name
-     * 
+     *
      * @return string $name
      */
     public function getName()
@@ -77,7 +77,7 @@ class RoutingParameter extends Entity
 
     /**
      * set name
-     * 
+     *
      * @param string $name
      */
     public function setName($name)
@@ -87,7 +87,7 @@ class RoutingParameter extends Entity
 
     /**
      * get defaultValue
-     * 
+     *
      * @return string $defaultValue
      */
     public function getDefaultValue()
@@ -97,7 +97,7 @@ class RoutingParameter extends Entity
 
     /**
      * set defaultValue
-     * 
+     *
      * @param string $defaultValue
      */
     public function setDefaultValue($defaultValue)
@@ -107,7 +107,7 @@ class RoutingParameter extends Entity
 
     /**
      * get requirement
-     * 
+     *
      * @return string $requirement
      */
     public function getRequirement()
@@ -117,7 +117,7 @@ class RoutingParameter extends Entity
 
     /**
      * set requirement
-     * 
+     *
      * @param string $requirement
      */
     public function setRequirement($requirement)
@@ -127,7 +127,7 @@ class RoutingParameter extends Entity
 
     /**
      * add routings
-     * 
+     *
      * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
      */
     public function addRoutings(Routing $routings)
@@ -137,12 +137,11 @@ class RoutingParameter extends Entity
 
     /**
      * get routings
-     * 
+     *
      * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
      */
     public function getRoutings()
     {
         return $this->routings;
     }
-
 }

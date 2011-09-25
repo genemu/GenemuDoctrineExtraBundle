@@ -15,5 +15,13 @@ use Doctrine\ORM\EntityRepository;
 
 class Routing extends EntityRepository
 {
+    public function getMaxDate()
+    {
 
+    }
+
+    public function findAllWithParameters()
+    {
+
+    }
 }

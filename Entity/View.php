@@ -12,10 +12,11 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\View
- * 
+ *
  * @ORM\Table(
  *     name="genemu_doctrine_extra_view"
  * )
@@ -27,35 +28,35 @@ class View extends Entity
 {
     /**
      * @var string $name
-     * 
+     *
      * @ORM\Column(type="string", length="128")
      */
     protected $name;
 
     /**
      * @var string $format
-     * 
+     *
      * @ORM\Column(type="string", length="4")
      */
     protected $format;
 
     /**
      * @var string $engine
-     * 
+     *
      * @ORM\Column(type="string", length="4")
      */
     protected $engine;
 
     /**
      * @var string $directory
-     * 
+     *
      * @ORM\Column(nullable="true", type="string", length="128")
      */
     protected $directory;
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle $bundle
-     * 
+     *
      * @ORM\ManyToOne(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle",
      *     inversedBy="views"
@@ -68,8 +69,27 @@ class View extends Entity
     protected $bundle;
 
     /**
+     * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Routing",
+     *     mappedBy="view",
+     *     cascade={"all"}
+     * )
+     */
+    protected $routings;
+
+    /**
+     * Construct
+     */
+    public function __construct()
+    {
+        $this->routings = new ArrayCollection();
+    }
+
+    /**
      * get name
-     * 
+     *
      * @return string $name
      */
     public function getName()
@@ -79,7 +99,7 @@ class View extends Entity
 
     /**
      * set name
-     * 
+     *
      * @param string $name
      */
     public function setName($name)
@@ -89,7 +109,7 @@ class View extends Entity
 
     /**
      * get format
-     * 
+     *
      * @return string $format
      */
     public function getFormat()
@@ -99,7 +119,7 @@ class View extends Entity
 
     /**
      * set format
-     * 
+     *
      * @param string $format
      */
     public function setFormat($format)
@@ -109,7 +129,7 @@ class View extends Entity
 
     /**
      * get engine
-     * 
+     *
      * @return string $engine
      */
     public function getEngine()
@@ -119,7 +139,7 @@ class View extends Entity
 
     /**
      * set engine
-     * 
+     *
      * @param string $engine
      */
     public function setEngine($engine)
@@ -129,7 +149,7 @@ class View extends Entity
 
     /**
      * get directory
-     * 
+     *
      * @return string $directory
      */
     public function getDirectory()
@@ -139,7 +159,7 @@ class View extends Entity
 
     /**
      * set directory
-     * 
+     *
      * @param string $directory
      */
     public function setDirectory($directory)
@@ -149,7 +169,7 @@ class View extends Entity
 
     /**
      * set bundle
-     * 
+     *
      * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle $bundle
      */
     public function setBundle(Bundle $bundle)
@@ -159,7 +179,7 @@ class View extends Entity
 
     /**
      * get bundle
-     * 
+     *
      * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle $bundle
      */
     public function getBundle()
@@ -167,4 +187,35 @@ class View extends Entity
         return $this->bundle;
     }
 
+    /**
+     * add routings
+     *
+     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
+     */
+    public function addRoutings(Routing $routings)
+    {
+        $this->routings->add($routings);
+    }
+
+    /**
+     * get routings
+     *
+     * @return Doctrine\Common\Collections\ArrayCollection $routings
+     */
+    public function getRoutings()
+    {
+        return $this->routings;
+    }
+
+    /**
+     * toString
+     *
+     * @return string template name
+     */
+    public function __toString()
+    {
+        $bundle = $this->getBundle();
+
+        return $bundle->getName().':'.$this->directory.':'.$this->name.'.'.$this->format.'.'.$this->engine;
+    }
 }
