@@ -1,8 +1,13 @@
 {% extends "GenemuDoctrineExtraBundle::base.html.twig" %}
 
+{% block links %}
+<link href="{{ asset('bundles/genemudoctrineextra/css/base.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ asset('bundles/genemudoctrineextra/css/form.css') }}" rel="stylesheet" type="text/css" media="all" />
+{% endblock links %}
+
 {% block scripts %}
 <script type="text/javascript" src="{{ asset('bundles/genemudoctrineextra/js/jquery-1.6.4.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/genemudoctrineextra/js/routing.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/genemudoctrineextra/js/jquery.collection.js') }}"></script>
 {% endblock scripts %}
 
 {% block body %}

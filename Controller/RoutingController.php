@@ -26,7 +26,23 @@ class RoutingController extends Controller
 
     public function editAction(Routing $routing)
     {
+        $patterns = $routing->getPatterns()->toArray();
+
         if (true === $form = $this->proccessForm($routing)) {
+            $dataPatterns = $routing->getPatterns();
+
+            foreach ($dataPatterns as $pattern) {
+                $pattern->setRouting($routing);
+            }
+
+            foreach ($patterns as $pattern) {
+                if (!$dataPatterns->contains($pattern)) {
+                    $this->getEm()->remove($pattern);
+                }
+            }
+
+            $this->getEm()->flush();
+
             return $this->redirect($this->generateUrl('routing_index'));
         }
 
@@ -38,6 +54,13 @@ class RoutingController extends Controller
         $routing = new Routing();
 
         if (true === $form = $this->proccessForm($routing)) {
+            foreach ($routing->getPatterns() as $pattern) {
+                $pattern->setRouting($routing);
+            }
+
+            $this->getEm()->persist($routing);
+            $this->getEm()->flush();
+
             return $this->redirect($this->generateUrl('routing_index'));
         }
 
@@ -89,12 +112,6 @@ class RoutingController extends Controller
             $form->bindRequest($request);
 
             if ($form->isValid()) {
-                foreach ($routing->getPatterns() as $pattern) {
-                    $pattern->setRouting($routing);
-                }
-                $this->getEm()->persist($routing);
-                $this->getEm()->flush();
-
                 return true;
             }
         }

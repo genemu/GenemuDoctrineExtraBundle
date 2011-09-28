@@ -27,7 +27,8 @@ class RoutingType extends AbstractType
             ->add('patterns', 'collection', array(
                 'type' => new PatternType(),
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
+                'attr' => array('class' => 'collection')
             ))
             ->add('method', 'entity', array(
                 'class' => 'GenemuDoctrineExtraBundle:Method',
@@ -52,7 +53,8 @@ class RoutingType extends AbstractType
             ->add('routingparameters', 'collection', array(
                 'type' => new RoutingParameterType(),
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
+                'attr' => array('class' => 'collection')
             ));
     }
 

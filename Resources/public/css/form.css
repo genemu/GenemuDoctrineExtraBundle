@@ -1,0 +1,39 @@
+form {
+    text-align: left;
+    width: 80%;
+    margin: 0 auto;
+    border: 1px solid #888;
+}
+
+form label {
+    width: 15%;
+    display: block;
+    float: left;
+}
+
+form div {
+    padding: 5px;
+}
+
+form input, form textarea, form div.collection {
+    width: 80%;
+    padding: 0;
+    float: right;
+    overflow: hidden;
+}
+
+form div.collections div {
+    padding: 0;
+}
+
+form .collections label {
+    float: none;
+}
+
+form textarea {
+    height: 100px;
+}
+
+form .clear {
+    clear: both;
+}
