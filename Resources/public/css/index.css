@@ -6,12 +6,11 @@ body {
 #routings {
     list-style: none;
     margin: 0;
+    border: 1px solid #888;
 }
 
 #routings li {
-    border: 1px solid #888;
-    margin: 5px 0;
-    padding: 5px;
+    padding: 0 5px;
     overflow: hidden;
     background: #CCC;
 }
@@ -42,7 +41,11 @@ body {
 }
 
 #routings .description .pattern strong {
-    width: 30px;
+    width: 50px;
+}
+
+#routings .description .name strong {
+    float: none;
 }
 
 #routings .action {

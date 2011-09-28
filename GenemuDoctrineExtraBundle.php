@@ -12,10 +12,20 @@
 namespace Genemu\Bundle\DoctrineExtraBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Genemu\Bundle\DoctrineExtraBundle\DependencyInjection\Compiler\FormPass;
 
 /**
  * @author Olivier Chauvel <olchauvel@gmail.com>
  */
 class GenemuDoctrineExtraBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+        $container->addCompilerPass(new FormPass());
+    }
 }

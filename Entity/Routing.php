@@ -12,6 +12,7 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraint as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Routing\Route;
 use Genemu\Bundle\DoctrineExtraBundle\Routing\RoutingInterface;
@@ -65,7 +66,8 @@ class Routing extends Entity implements RoutingInterface
      *
      * @ORM\ManyToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter",
-     *     inversedBy="routings"
+     *     inversedBy="routings",
+     *     cascade={"all"}
      * )
      * @ORM\JoinTable(
      *     name="genemu_doctrine_extra_routings_routingparameters",
@@ -285,6 +287,11 @@ class Routing extends Entity implements RoutingInterface
         return $this->view;
     }
 
+    /**
+     * get routes
+     *
+     * @return array $routes
+     */
     public function getRoutes()
     {
         if (!$this->method) {
@@ -313,7 +320,7 @@ class Routing extends Entity implements RoutingInterface
         }
 
         $routes = array();
-        foreach ($this->patterns as $index => $pattern) {
+        foreach ($this->patterns as $pattern) {
             $name = $this->name.(($pattern->getLocale() == 'en')?'':'.'.$pattern->getLocale());
             $routes[$name] = new Route($pattern->getName(), $defaults, $requirements);
         }

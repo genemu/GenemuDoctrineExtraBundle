@@ -6,19 +6,57 @@
 {% endblock links %}
 
 {% block body %}
-<h1>{% trans %}Routing Manager{% endtrans %}</h1>
+<h1>
+    <a href="{{ path('routing_index') }}" title="{% trans %}Routing Manager{% endtrans %}">
+        {% trans %}Routing Manager{% endtrans %}
+    </a>
+</h1>
 <ul id="routings">
     {% for routing in routings %}
         {% set publish = routing.publish?'Unpublish':'Publish' %}
         <li class="routing {{ loop.index is divisibleby(2)?'even':'odd' }}">
             <div class="description">
-                <p><strong>{% trans %}Name{% endtrans %} :</strong> {{ routing.name }}</p>
-                <p class="name"><strong>{% trans %}patterns{% endtrans %} :</strong></p>
-                {% for pattern in routing.patterns %}
-                <p class="pattern"><strong>{{ pattern.locale }} :</strong> {{ pattern.name }}</p>
-                {% endfor %}
-                <p class="name"><strong>{% trans %}_controller{% endtrans %} :</strong> {{ routing.method }}</p>
-                <p><strong>{% trans %}Template{% endtrans %} :</strong> {{ routing.view }}</p>
+                <p>
+                    <strong>{{ routing.name }}:</strong>
+                </p>
+                <p class="name">
+                    <strong>{% trans %}pattern{% endtrans %}:</strong>
+                    <span>{ </span>
+                    {% for pattern in routing.patterns %}
+                        <strong>{{ pattern.locale }}:</strong>
+                        <span>{{ pattern.name }}{{ loop.last?'':', ' }}</span>
+                    {% endfor %}
+                    <span> }</span>
+                </p>
+                <p class="name">
+                    <strong>{% trans %}defaults{% endtrans %}:</strong>
+                    <span>{ </span>
+                    <strong>{% trans %}_controller{% endtrans %}:</strong>
+                    <span>{{ routing.method }}</span>
+                    {% for parameter in routing.routingparameters %}
+                        {% if parameter.defaultValue %}
+                            <span>, </span>
+                            <strong>{{ parameter.name }}:</strong>
+                            <span>{{ parameter.defaultValue }}</span>
+                        {% endif %}
+                    {% endfor %}
+                    <span> }</span>
+                </p>
+                <p class="name">
+                    <strong>{% trans %}requirements{% endtrans %}:</strong>
+                    <span>{ </span>
+                    {% for parameter in routing.routingparameters %}
+                        {% if parameter.requirement %}
+                            <strong>{{ parameter.name }}:</strong>
+                            <span>{{ parameter.requirement }}{{ loop.last?'':', ' }}</span>
+                        {% endif %}
+                    {% endfor %}
+                    <span> }</span>
+                </p>
+                <p class="name">
+                    <strong>{% trans %}template{% endtrans %}:</strong>
+                    <span>{{ routing.view }}</span>
+                </p>
             </div>
             <div class="action">
                 <a class="moveup" title="{% trans %}Move up{% endtrans %}" href="{{ path('routing_move', {'id': routing.id, 'type': 'up'}) }}">

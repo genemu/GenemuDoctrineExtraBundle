@@ -13,6 +13,9 @@ namespace Genemu\Bundle\DoctrineExtraBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Genemu\Bundle\DoctrineExtraBundle\Config\Resource\DoctrineResource;
+use Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern;
+use Genemu\Bundle\DoctrineExtraBundle\Entity\Routing;
+use Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter;
 
 class RoutingListener
 {
@@ -25,28 +28,35 @@ class RoutingListener
 
     public function postPersist(LifecycleEventArgs $args)
     {
-        $class = new \ReflectionClass($args->getEntity());
-
-        if ($class->implementsInterface('Genemu\Bundle\DoctrineExtraBundle\ROuting\RoutingInterface')) {
+        if ($this->checkEntity($args->getEntity())) {
             $this->resource->updated();
         }
     }
 
     public function postUpdate(LifecycleEventArgs $args)
     {
-        $class = new \ReflectionClass($args->getEntity());
-
-        if ($class->implementsInterface('Genemu\Bundle\DoctrineExtraBundle\ROuting\RoutingInterface')) {
+        if ($this->checkEntity($args->getEntity())) {
             $this->resource->updated();
         }
     }
 
     public function postRemove(LifecycleEventArgs $args)
     {
-        $class = new \ReflectionClass($args->getEntity());
-
-        if ($class->implementsInterface('Genemu\Bundle\DoctrineExtraBundle\ROuting\RoutingInterface')) {
+        if ($this->checkEntity($args->getEntity())) {
             $this->resource->updated();
         }
+    }
+
+    protected function checkEntity($entity)
+    {
+        if (
+            $entity instanceof Routing ||
+            $entity instanceof Pattern ||
+            $entity instanceof RoutingParameter
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }

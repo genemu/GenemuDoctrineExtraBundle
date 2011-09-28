@@ -1,0 +1,15 @@
+{% block genemu_routing_widget %}
+{{ form_errors(form) }}
+{{ form_row(form.name) }}
+<div id="patterns">
+{{ form_row(form.patterns) }}
+<a href="#{{ form.patterns.get('id') }}" id="add_{{ form.patterns.get('id') }}">{% trans %}Add pattern culture{% endtrans %}</a>
+</div>
+{{ form_row(form.method) }}
+{{ form_row(form.view) }}
+<div id="parameters">
+{{ form_row(form.routingparameters) }}
+<a href="#{{ form.routingparameters.get('id') }}" id="add_{{ form.routingparameters.get('id') }}">{% trans %}Add parameter{% endtrans %}</a>
+</div>
+{{ form_rest(form) }}
+{% endblock genemu_routing_widget %}

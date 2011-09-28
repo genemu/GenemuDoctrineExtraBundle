@@ -26,18 +26,22 @@ class RoutingController extends Controller
 
     public function editAction(Routing $routing)
     {
-        return array(
-            'form' => $this->proccessForm($routing)
-        );
+        if (true === $form = $this->proccessForm($routing)) {
+            return $this->redirect($this->generateUrl('routing_index'));
+        }
+
+        return array('form' => $form);
     }
 
     public function newAction()
     {
         $routing = new Routing();
 
-        return array(
-            'form' => $this->proccessForm($routing)
-        );
+        if (true === $form = $this->proccessForm($routing)) {
+            return $this->redirect($this->generateUrl('routing_index'));
+        }
+
+        return array('form' => $form);
     }
 
     public function moveAction(Routing $routing, $type)
@@ -85,8 +89,13 @@ class RoutingController extends Controller
             $form->bindRequest($request);
 
             if ($form->isValid()) {
+                foreach ($routing->getPatterns() as $pattern) {
+                    $pattern->setRouting($routing);
+                }
                 $this->getEm()->persist($routing);
                 $this->getEm()->flush();
+
+                return true;
             }
         }
 

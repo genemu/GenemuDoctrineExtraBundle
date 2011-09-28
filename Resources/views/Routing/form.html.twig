@@ -1,5 +1,7 @@
-<form action="" method="post">
+<form action="" method="post" {{ form_enctype(form) }}>
 {{ form_widget(form) }}
-<a href="#" id="add_parameter">{% trans %}Add parameter{% endtrans %}</a>
 <input type="submit" />
 </form>
+<a href="{{ path('routing_index') }}" title="{% trans %}Routing manager{% endtrans %}">
+    {% trans %}Go Routing Manager{% endtrans %}
+</a>
