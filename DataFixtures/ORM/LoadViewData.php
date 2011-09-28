@@ -21,15 +21,20 @@ class LoadViewData extends AbstractFixture implements OrderedFixtureInterface
     {
         $bundle = $this->getReference('genemu_doctrine_extra_bundle');
 
-        foreach (array('index', 'edit', 'new') as $name) {
-            $view = new View();
-            $view->setName($name);
-            $view->setFormat('html');
-            $view->setEngine('twig');
-            $view->setDirectory('Routing');
-            $view->setBundle($bundle);
+        foreach (array('index', 'edit', 'new', 'remove', 'publish') as $name) {
 
-            $manager->persist($view);
+            if (in_array($name, array('remove', 'publish'))) {
+                $view = $this->getReference('genemu_doctrine_extra_view_index');
+            } else {
+                $view = new View();
+                $view->setName($name);
+                $view->setFormat('html');
+                $view->setEngine('twig');
+                $view->setDirectory('Routing');
+                $view->setBundle($bundle);
+
+                $manager->persist($view);
+            }
 
             $this->setReference('genemu_doctrine_extra_view_'.$name, $view);
         }

@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityRepository;
 
 class Routing extends EntityRepository
 {
-    public function findAll()
+    public function findRoutingAll($publish = true)
     {
         $qb = $this->createQueryBuilder('routing')
             ->leftJoin('routing.routingparameters', 'routingparameters')
@@ -25,13 +25,17 @@ class Routing extends EntityRepository
             ->leftJoin('method.controller', 'controller')
             ->leftJoin('controller.bundle', 'bundle_controller');
 
-        $qb->select('partial routing.{id, pattern, name, ordering}')
+        $qb->select('partial routing.{id, pattern, name, ordering, publish}')
             ->addSelect('partial routingparameters.{id, name, defaultValue, requirement}')
             ->addSelect('partial view.{id, name, format, engine, directory}')
             ->addSelect('partial bundle_view.{id, name}')
             ->addSelect('partial method.{id, name}')
             ->addSelect('partial controller.{id, name}')
             ->addSelect('partial bundle_controller.{id, name}');
+
+        if ($publish) {
+            $qb->where($qb->expr()->eq('routing.publish', $qb->expr()->literal(true)));
+        }
 
         return $qb->getQuery()->getResult();
     }

@@ -42,6 +42,10 @@ To create Bundle, Controller, Method and View, intilialize fixtures in your data
     ./app/console doctrine:database:create
     ./app/console doctrine:schema:create
 
+Initialize doctrine fixtures for this service
+
+    ./app/console doctrine:fixtures:load
+
 This command save in your database all Bundles, Controllers, Methods and Views
 
     ./app/console router:fixtures:update
@@ -51,3 +55,7 @@ This command save in your database all Bundles, Controllers, Methods and Views
     _genemu_doctrine_routing:
         resource: GenemuDoctrineExtraBundle:Routing
         type:     doctrine
+
+## Routing Manager
+
+Url to routing manager is `http:://yoursite/routing`

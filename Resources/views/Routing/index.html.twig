@@ -1,1 +1,27 @@
 {% extends "GenemuDoctrineExtraBundle::base.html.twig" %}
+
+{% block body %}
+<h1>{% trans %}Routing Manager{% endtrans %}</h1>
+<ul id="routings">
+    {% for routing in routings %}
+        {% set publish = routing.publish?'Unpublish':'Publish' %}
+        <li class="routing">
+            <div class="description">
+                <p>{% trans %}Pattern{% endtrans %} : {{ routing.pattern }}</p>
+                <p>{% trans %}_Controller{% endtrans %} : {{ routing.method }}</p>
+                <p>{% trans %}Template{% endtrans %} : {{ routing.view }}</p>
+            </div>
+            <div class="action">
+                <a href="#">MoveUp</a>
+                <a href="#">MoveDown</a>
+                <a href="{{ path('routing_publish', {'id': routing.id}) }}">{{ publish|trans }}</a>
+                <a href="{{ path('routing_edit', {'id': routing.id}) }}">{% trans %}Edit{% endtrans %}</a>
+                <a href="{{ path('routing_remove', {'id': routing.id}) }}">{% trans %}Remove{% endtrans %}</a>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+<div id="actions">
+    <a href="{{ path('routing_new') }}">Add</a>
+</div>
+{% endblock body %}

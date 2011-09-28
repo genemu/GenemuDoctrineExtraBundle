@@ -36,7 +36,7 @@ class DoctrineRouteLoader implements LoaderInterface
         $collection = new RouteCollection();
         $collection->addResource($this->resource->getResource());
 
-        foreach ($repository->findAll() as $routing) {
+        foreach ($repository->findRoutingAll() as $routing) {
             if ($route = $routing->getRoute()) {
                 $collection->add($routing->getName(), $routing->getRoute());
             }

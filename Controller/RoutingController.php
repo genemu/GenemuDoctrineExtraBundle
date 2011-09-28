@@ -20,7 +20,7 @@ class RoutingController extends Controller
     public function indexAction()
     {
         return array(
-            'routings' => $this->getDoctrine()->getRepository('GenemuDoctrineExtraBundle:Routing')->findAll()
+            'routings' => $this->getDoctrine()->getRepository('GenemuDoctrineExtraBundle:Routing')->findRoutingAll(false)
         );
     }
 
@@ -38,6 +38,22 @@ class RoutingController extends Controller
         return array(
             'form' => $this->proccessForm($routing)
         );
+    }
+
+    public function publishAction(Routing $routing)
+    {
+        $routing->tooglePublish();
+        $this->getDoctrine()->getEntityManager()->flush();
+
+        return $this->redirect($this->generateUrl('routing_index'));
+    }
+
+    public function removeAction(Routing $routing)
+    {
+        $this->getDoctrine()->getEntityManager()->remove($routing);
+        $this->getDoctrine()->getEntityManager()->flush();
+
+        return $this->redirect($this->generateUrl('routing_index'));
     }
 
     protected function proccessForm(Routing $routing)

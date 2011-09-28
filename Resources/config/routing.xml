@@ -22,6 +22,7 @@
         <service id="genemu.listener.routing" class="%genemu.listener.routing.class%">
             <tag name="doctrine.event_listener" event="postPersist" />
             <tag name="doctrine.event_listener" event="postUpdate" />
+            <tag name="doctrine.event_listener" event="postRemove" />
             <argument type="service" id="genemu.resource.routing" />
         </service>
     </services>

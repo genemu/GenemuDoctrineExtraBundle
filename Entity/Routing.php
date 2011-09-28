@@ -50,6 +50,13 @@ class Routing extends Entity implements RoutingInterface
     protected $ordering;
 
     /**
+     * @var boolean $publish
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $publish;
+
+    /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter $routingparameters
      *
      * @ORM\ManyToMany(
@@ -103,6 +110,7 @@ class Routing extends Entity implements RoutingInterface
      */
     public function __construct()
     {
+        $this->publish = false;
         $this->routingparameters = new ArrayCollection();
     }
 
@@ -164,6 +172,34 @@ class Routing extends Entity implements RoutingInterface
     public function setOrdering($ordering)
     {
         $this->ordering = $ordering;
+    }
+
+    /**
+     * get publish
+     *
+     * @return boolean $publish
+     */
+    public function getPublish()
+    {
+        return $this->publish;
+    }
+
+    /**
+     * set publish
+     *
+     * @param boolean $publish
+     */
+    public function setPublish($publish)
+    {
+        $this->publish = $publish;
+    }
+
+    /**
+     * toogle publish
+     */
+    public function tooglePublish()
+    {
+        $this->publish = $this->publish?false:true;
     }
 
     /**

@@ -40,4 +40,13 @@ class RoutingListener
             $this->resource->updated();
         }
     }
+
+    public function postRemove(LifecycleEventArgs $args)
+    {
+        $class = new \ReflectionClass($args->getEntity());
+
+        if ($class->implementsInterface('Genemu\Bundle\DoctrineExtraBundle\ROuting\RoutingInterface')) {
+            $this->resource->updated();
+        }
+    }
 }

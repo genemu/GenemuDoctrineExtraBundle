@@ -19,11 +19,11 @@ class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load($manager)
     {
-        foreach (array('index', 'edit', 'new') as $name) {
+        foreach (array('index', 'edit', 'new', 'remove', 'publish') as $name) {
             $pattern = '/routing';
 
-            if ($name == 'edit') {
-                $pattern .= '/edit/{id}';
+            if (in_array($name, array('edit', 'remove', 'publish'))) {
+                $pattern .= '/'.$name.'/{id}';
             } elseif ($name == 'new') {
                 $pattern .= '/new';
             }
@@ -31,6 +31,7 @@ class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
             $route = new Routing();
             $route->setName('routing_'.$name);
             $route->setPattern($pattern);
+            $route->setPublish(true);
             $route->setMethod($this->getReference('genemu_doctrine_extra_method_'.$name));
             $route->setView($this->getReference('genemu_doctrine_extra_view_'.$name));
 
