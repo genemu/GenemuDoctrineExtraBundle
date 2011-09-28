@@ -46,3 +46,8 @@ This command save in your database all Bundles, Controllers, Methods and Views
 
     ./app/console router:fixtures:update
 
+### Add routing in `app/config/routing.yml`
+
+    _genemu_doctrine_routing:
+        resource: GenemuDoctrineExtraBundle:Routing
+        type:     doctrine
