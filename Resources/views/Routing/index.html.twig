@@ -1,30 +1,35 @@
 {% extends "GenemuDoctrineExtraBundle::base.html.twig" %}
 
+{% block links %}
+<link href="{{ asset('bundles/genemudoctrineextra/css/base.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ asset('bundles/genemudoctrineextra/css/index.css') }}" rel="stylesheet" type="text/css" media="all" />
+{% endblock links %}
+
 {% block body %}
 <h1>{% trans %}Routing Manager{% endtrans %}</h1>
 <ul id="routings">
     {% for routing in routings %}
         {% set publish = routing.publish?'Unpublish':'Publish' %}
-        <li class="routing">
+        <li class="routing {{ loop.index is divisibleby(2)?'even':'odd' }}">
             <div class="description">
-                <p>{% trans %}Pattern{% endtrans %} : {{ routing.pattern }}</p>
-                <p>{% trans %}_Controller{% endtrans %} : {{ routing.method }}</p>
-                <p>{% trans %}Template{% endtrans %} : {{ routing.view }}</p>
+                <p><strong>{% trans %}Pattern{% endtrans %} :</strong> {{ routing.pattern }}</p>
+                <p><strong>{% trans %}_Controller{% endtrans %} :</strong> {{ routing.method }}</p>
+                <p><strong>{% trans %}Template{% endtrans %} :</strong> {{ routing.view }}</p>
             </div>
             <div class="action">
-                <a href="{{ path('routing_move', {'id': routing.id, 'type': 'up'}) }}">
+                <a class="moveup" title="{% trans %}Move up{% endtrans %}" href="{{ path('routing_move', {'id': routing.id, 'type': 'up'}) }}">
                     {% trans %}MoveUp{% endtrans %}
                 </a>
-                <a href="{{ path('routing_move', {'id': routing.id, 'type': 'down'}) }}">
+                <a class="movedown" title="{% trans %}Move down{% endtrans %}" href="{{ path('routing_move', {'id': routing.id, 'type': 'down'}) }}">
                     {% trans %}MoveDown{% endtrans %}
                 </a>
-                <a href="{{ path('routing_publish', {'id': routing.id}) }}">
+                <a class="{{ publish|lower }}" title="{{ publish|trans }}" href="{{ path('routing_publish', {'id': routing.id}) }}">
                     {{ publish|trans }}
                 </a>
-                <a href="{{ path('routing_edit', {'id': routing.id}) }}">
+                <a class="edit" title="{% trans %}Edit{% endtrans %}" href="{{ path('routing_edit', {'id': routing.id}) }}">
                     {% trans %}Edit{% endtrans %}
                 </a>
-                <a href="{{ path('routing_remove', {'id': routing.id}) }}">
+                <a class="remove" title="{% trans %}Remove{% endtrans %}" href="{{ path('routing_remove', {'id': routing.id}) }}">
                     {% trans %}Remove{% endtrans %}
                 </a>
             </div>

@@ -1,8 +1,9 @@
 {% extends "GenemuDoctrineExtraBundle::base.html.twig" %}
 
+{% block scripts %}
+<script type="text/javascript" src="{{ asset('bundles/genemudoctrineextra/js/routing.js') }}" />
+{% endblock scripts %}
+
 {% block body %}
-<form action="" method="post">
-{{ form_widget(form) }}
-<input type="submit" />
-</form>
+{% include "GenemuDoctrineExtraBundle:Routing:form.html.twig" %}
 {% endblock body %}

@@ -1,0 +1,67 @@
+body {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#routings {
+    list-style: none;
+    margin: 0;
+}
+
+#routings li {
+    border: 1px solid #888;
+    margin: 5px 0;
+    padding: 5px;
+    overflow: hidden;
+    background: #CCC;
+    height: 65px;
+}
+
+#routings li.even {
+    background: #EEE;
+}
+
+#routings .description {
+    float: left;
+}
+
+#routings .action {
+    height: 35px;
+    padding: 15px 0;
+    float: right;
+}
+
+#routings .action a {
+    background-image: url(/bundles/genemudoctrineextra/images/icons.png);
+    background-repeat: no-repeat;
+    display: block;
+    float: left;
+    width: 32px;
+    height: 32px;
+    text-indent: 999px;
+    margin: 0 5px;
+}
+
+#routings .action a.moveup {
+    background-position: 0 0;
+}
+
+#routings .action a.movedown {
+    background-position: 0 -32px;
+}
+
+#routings .action a.publish {
+    background-position: -32px 0;
+}
+
+#routings .action a.unpublish {
+    background-position: -32px -32px;
+}
+
+#routings .action a.edit {
+    background-position: -64px 0;
+}
+
+#routings .action a.remove {
+    background-position: -64px -32px;
+}

@@ -50,6 +50,10 @@ This command save in your database all Bundles, Controllers, Methods and Views
 
     ./app/console router:fixtures:update
 
+### Publish assets
+
+    ./app/console assets:install
+
 ### Initialize routing `app/config/routing.yml`
 
     _genemu_doctrine_routing:
