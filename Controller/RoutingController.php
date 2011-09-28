@@ -40,20 +40,40 @@ class RoutingController extends Controller
         );
     }
 
+    public function moveAction(Routing $routing, $type)
+    {
+        $repository = $this->getDoctrine()->getRepository('GenemuDoctrineExtraBundle:Routing');
+
+        if ($type == 'up') {
+            $repository->moveUp($routing);
+        } elseif ($type == 'down') {
+            $repository->moveDown($routing);
+        }
+
+        $this->getEm()->flush();
+
+        return $this->redirect($this->generateUrl('routing_index'));
+    }
+
     public function publishAction(Routing $routing)
     {
         $routing->tooglePublish();
-        $this->getDoctrine()->getEntityManager()->flush();
+        $this->getEm()->flush();
 
         return $this->redirect($this->generateUrl('routing_index'));
     }
 
     public function removeAction(Routing $routing)
     {
-        $this->getDoctrine()->getEntityManager()->remove($routing);
-        $this->getDoctrine()->getEntityManager()->flush();
+        $this->getEm()->remove($routing);
+        $this->getEm()->flush();
 
         return $this->redirect($this->generateUrl('routing_index'));
+    }
+
+    protected function getEm()
+    {
+        return $this->getDoctrine()->getEntityManager();
     }
 
     protected function proccessForm(Routing $routing)
@@ -65,8 +85,8 @@ class RoutingController extends Controller
             $form->bindRequest($request);
 
             if ($form->isValid()) {
-                $this->getDoctrine()->getEntityManager()->persist($routing);
-                $this->getDoctrine()->getEntityManager()->flush();
+                $this->getEm()->persist($routing);
+                $this->getEm()->flush();
             }
         }
 

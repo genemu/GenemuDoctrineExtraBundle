@@ -21,7 +21,7 @@ class LoadMethodData extends AbstractFixture implements OrderedFixtureInterface
     {
         $controller = $this->getReference('genemu_doctrine_extra_controller');
 
-        foreach (array('index', 'edit', 'new', 'remove', 'publish') as $name) {
+        foreach (array('index', 'edit', 'new', 'remove', 'publish', 'move') as $name) {
             $method = new Method();
             $method->setName($name);
             $method->setController($controller);

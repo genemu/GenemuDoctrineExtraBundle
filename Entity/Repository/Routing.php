@@ -37,6 +37,41 @@ class Routing extends EntityRepository
             $qb->where($qb->expr()->eq('routing.publish', $qb->expr()->literal(true)));
         }
 
+        $qb->orderBy('routing.ordering');
+
         return $qb->getQuery()->getResult();
+    }
+
+    public function moveUp($node)
+    {
+        $routings = $this->findRoutingAll(false);
+
+        foreach ($routings as $index => $routing) {
+            $routing->setOrdering($index);
+
+            if ($routing->getId() == $node->getId() && $index != 0) {
+                $routing->setOrdering($index-1);
+                $routings[$index-1]->setOrdering($index+1);
+            }
+        }
+    }
+
+    public function moveDown($node)
+    {
+        $routings = $this->findRoutingAll(false);
+        $exists = false;
+        foreach ($routings as $index => $routing) {
+            $routing->setOrdering($index);
+
+            if ($exists) {
+                $routing->setOrdering($index-1);
+                $exists = false;
+            }
+
+            if ($routing->getId() == $node->getId() && isset($routings[$index+1])) {
+                $routing->setOrdering($index+1);
+                $exists = true;
+            }
+        }
     }
 }

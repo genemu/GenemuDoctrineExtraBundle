@@ -1,4 +1,17 @@
-<html>
-    <head></head>
-    <body>{% block body "" %}</body>
+<!DOCTYPE html>
+<html{% if culture is defined %} lang="{{ culture }}" xml:lang="{{ culture }}"{% endif %}>
+    <head>
+        <title>{% trans %}Routing Manager{% endtrans %}</title>
+        <meta name="title" content="{% trans %}Routing Manager{% endtrans %}" />
+        <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+        <link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />
+        {% if culture is defined %}
+        <meta name="language" content="{{ culture }}" />
+        <meta content="{{ culture }}" http-equiv="content-lenguage" />
+        {% endif %}
+        {% block links "" %}
+    </head>
+    <body>
+        {% block body "" %}
+    </body>
 </html>

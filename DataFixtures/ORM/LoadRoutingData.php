@@ -19,13 +19,15 @@ class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load($manager)
     {
-        foreach (array('index', 'edit', 'new', 'remove', 'publish') as $name) {
+        foreach (array('index', 'edit', 'new', 'remove', 'publish', 'move') as $name) {
             $pattern = '/routing';
 
             if (in_array($name, array('edit', 'remove', 'publish'))) {
                 $pattern .= '/'.$name.'/{id}';
             } elseif ($name == 'new') {
                 $pattern .= '/new';
+            } elseif ($name == 'move') {
+                $pattern .= '/move/{type}/{id}';
             }
 
             $route = new Routing();
