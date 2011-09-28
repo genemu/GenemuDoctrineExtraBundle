@@ -29,7 +29,7 @@
                 <a class="edit" title="{% trans %}Edit{% endtrans %}" href="{{ path('routing_edit', {'id': routing.id}) }}">
                     {% trans %}Edit{% endtrans %}
                 </a>
-                <a class="remove" title="{% trans %}Remove{% endtrans %}" href="{{ path('routing_remove', {'id': routing.id}) }}">
+                <a class="remove" onclick="return confirm('{% trans %}Confirm delete routing{% endtrans %}');" title="{% trans %}Remove{% endtrans %}" href="{{ path('routing_remove', {'id': routing.id}) }}">
                     {% trans %}Remove{% endtrans %}
                 </a>
             </div>
