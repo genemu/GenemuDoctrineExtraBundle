@@ -36,13 +36,6 @@ class Routing extends Entity implements RoutingInterface
     protected $name;
 
     /**
-     * @var string $pattern
-     *
-     * @ORM\Column(type="string", length="512", unique="true")
-     */
-    protected $pattern;
-
-    /**
      * @var integer $ordering
      *
      * @ORM\Column(nullable="true", type="integer")
@@ -55,6 +48,17 @@ class Routing extends Entity implements RoutingInterface
      * @ORM\Column(type="boolean")
      */
     protected $publish;
+
+    /**
+     * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern $patterns
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern",
+     *     mappedBy="routing",
+     *     cascade={"all"}
+     * )
+     */
+    protected $patterns;
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter $routingparameters
@@ -111,6 +115,7 @@ class Routing extends Entity implements RoutingInterface
     public function __construct()
     {
         $this->publish = false;
+        $this->patterns = new ArrayCollection();
         $this->routingparameters = new ArrayCollection();
     }
 
@@ -137,21 +142,39 @@ class Routing extends Entity implements RoutingInterface
     /**
      * get pattern
      *
-     * @return string $pattern
+     * @return Doctrine\Collections\ArrayCollection $patterns
      */
-    public function getPattern()
+    public function getPatterns()
     {
-        return $this->pattern;
+        return $this->patterns;
+    }
+
+    /**
+     * get pattern
+     *
+     * @param string $locale
+     *
+     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern $pattern
+     */
+    public function getPattern($locale = 'en')
+    {
+        foreach ($this->patterns as $pattern) {
+            if ($locale == $pattern->getLocale()) {
+                return $pattern;
+            }
+        }
+
+        return null;
     }
 
     /**
      * set pattern
      *
-     * @param string $pattern
+     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern $pattern
      */
-    public function setPattern($pattern)
+    public function addPattern(Pattern $pattern)
     {
-        $this->pattern = $pattern;
+        $this->patterns->add($pattern);
     }
 
     /**
@@ -262,7 +285,7 @@ class Routing extends Entity implements RoutingInterface
         return $this->view;
     }
 
-    public function getRoute()
+    public function getRoutes()
     {
         if (!$this->method) {
             return null;
@@ -289,6 +312,12 @@ class Routing extends Entity implements RoutingInterface
             }
         }
 
-        return new Route($this->pattern, $defaults, $requirements);
+        $routes = array();
+        foreach ($this->patterns as $index => $pattern) {
+            $name = $this->name.(($pattern->getLocale() == 'en')?'':'.'.$pattern->getLocale());
+            $routes[$name] = new Route($pattern->getName(), $defaults, $requirements);
+        }
+
+        return $routes;
     }
 }

@@ -17,35 +17,24 @@ use Symfony\Component\Form\FormBuilder;
 /**
  * @author Olivier Chauvel <olchauvel@gmail.com>
  */
-class RoutingType extends AbstractType
+class PatternType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('patterns', 'collection', array(
-                'type' => new PatternType(),
-                'allow_add' => true,
-                'allow_delete' => true
-            ))
-            ->add('method')
-            ->add('view')
-            ->add('routingparameters', 'collection', array(
-                'type' => new RoutingParameterType(),
-                'allow_add' => true,
-                'allow_delete' => true
-            ));
+            ->add('locale', 'locale')
+            ->add('name');
     }
 
     public function getDefaultOptions(array $options)
     {
         return array(
-            'data_class' => 'Genemu\Bundle\DoctrineExtraBundle\Entity\Routing'
+            'data_class' => 'Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern'
         );
     }
 
     public function getName()
     {
-        return 'genemu_routing';
+        return 'genemu_pattern';
     }
 }

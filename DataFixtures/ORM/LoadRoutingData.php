@@ -14,6 +14,7 @@ namespace Genemu\Bundle\CmsBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Genemu\Bundle\DoctrineExtraBundle\Entity\Routing;
+use Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern;
 
 class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -32,12 +33,18 @@ class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
 
             $route = new Routing();
             $route->setName('routing_'.$name);
-            $route->setPattern($pattern);
             $route->setPublish(true);
             $route->setMethod($this->getReference('genemu_doctrine_extra_method_'.$name));
             $route->setView($this->getReference('genemu_doctrine_extra_view_'.$name));
 
             $manager->persist($route);
+
+            $pat = new Pattern();
+            $pat->setName($pattern);
+            $pat->setLocale('en');
+            $pat->setRouting($route);
+
+            $manager->persist($pat);
         }
 
         $manager->flush();

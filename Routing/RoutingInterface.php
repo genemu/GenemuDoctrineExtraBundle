@@ -15,5 +15,5 @@ interface RoutingInterface
 {
     public function getName();
 
-    public function getRoute();
+    public function getRoutes();
 }

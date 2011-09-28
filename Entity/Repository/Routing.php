@@ -18,6 +18,7 @@ class Routing extends EntityRepository
     public function findRoutingAll($publish = true)
     {
         $qb = $this->createQueryBuilder('routing')
+            ->leftJoin('routing.patterns', 'patterns')
             ->leftJoin('routing.routingparameters', 'routingparameters')
             ->leftJoin('routing.view', 'view')
             ->leftJoin('view.bundle', 'bundle_view')
@@ -25,7 +26,8 @@ class Routing extends EntityRepository
             ->leftJoin('method.controller', 'controller')
             ->leftJoin('controller.bundle', 'bundle_controller');
 
-        $qb->select('partial routing.{id, pattern, name, ordering, publish}')
+        $qb->select('partial routing.{id, name, ordering, publish}')
+            ->addSelect('partial patterns.{id, name, locale}')
             ->addSelect('partial routingparameters.{id, name, defaultValue, requirement}')
             ->addSelect('partial view.{id, name, format, engine, directory}')
             ->addSelect('partial bundle_view.{id, name}')

@@ -14,7 +14,6 @@ body {
     padding: 5px;
     overflow: hidden;
     background: #CCC;
-    height: 65px;
 }
 
 #routings li.even {
@@ -25,9 +24,30 @@ body {
     float: left;
 }
 
+#routings .description p {
+    overflow: hidden;
+}
+
+#routings .description .name {
+    padding-left: 15px;
+}
+
+#routings .description .pattern {
+    padding-left: 30px;
+}
+
+#routings .description strong {
+    width: 80px;
+    float: left;
+}
+
+#routings .description .pattern strong {
+    width: 30px;
+}
+
 #routings .action {
     height: 35px;
-    padding: 15px 0;
+    padding: 25px 0;
     float: right;
 }
 
