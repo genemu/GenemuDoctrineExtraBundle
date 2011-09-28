@@ -47,6 +47,7 @@ class Bundle extends EntityRepository
             foreach ($bundle->getViews() as $view) {
                 $directory = $view->getDirectory();
                 $file = $view->getName().'.'.$view->getFormat().'.'.$view->getEngine();
+
                 $views[$directory.':'.$file] = array(
                     'entity' => $view
                 );

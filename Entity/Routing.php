@@ -13,6 +13,8 @@ namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Routing\Route;
+use Genemu\Bundle\DoctrineExtraBundle\Routing\RoutingInterface;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Routing
@@ -24,7 +26,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *     repositoryClass="Genemu\Bundle\DoctrineExtraBundle\Entity\Repository\Routing"
  * )
  */
-class Routing extends Entity
+class Routing extends Entity implements RoutingInterface
 {
     /**
      * @var string $name
@@ -222,5 +224,35 @@ class Routing extends Entity
     public function getView()
     {
         return $this->view;
+    }
+
+    public function getRoute()
+    {
+        if (!$this->method) {
+            return null;
+        }
+
+        $requirements = array();
+        $defaults = array(
+            '_controller' => $this->method->__toString()
+        );
+
+        if ($this->view) {
+            $defaults['_genemu_template'] = $this->view->__toString();
+        }
+
+        foreach ($this->routingparameters as $parameter) {
+            $name = $parameter->getName();
+
+            if ($default = $parameter->getDefaultValue()) {
+                $defaults[$name] = $default;
+            }
+
+            if ($requirement = $parameter->getRequirement()) {
+                $requirements[$name] = $requirement;
+            }
+        }
+
+        return new Route($this->pattern, $defaults, $requirements);
     }
 }

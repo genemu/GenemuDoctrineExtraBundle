@@ -9,13 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Genemu\Bundle\DoctrineExtraBundle;
+namespace Genemu\Bundle\DoctrineExtraBundle\Routing;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-/**
- * @author Olivier Chauvel <olchauvel@gmail.com>
- */
-class GenemuDoctrineExtraBundle extends Bundle
+interface RoutingInterface
 {
+    public function getName();
+
+    public function getRoute();
 }

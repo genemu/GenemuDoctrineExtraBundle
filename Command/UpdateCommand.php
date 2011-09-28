@@ -78,8 +78,8 @@ class UpdateCommand extends ContainerAwareCommand
 
                         $methods = array();
                         foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-                            if (preg_match('/Action/', $method->getName())) {
-                                $methods[strtr($method->getName(), array('Action' => ''))] = true;
+                            if (preg_match('/^(.+)Action$/', $method->getName(), $matchAction)) {
+                                $methods[$matchAction[1]] = true;
                             }
                         }
 
@@ -258,7 +258,7 @@ class UpdateCommand extends ContainerAwareCommand
 
         $output->writeln('<info>Ctreate method '.$name.' in '.$controller->getName().'</info>');
 
-        return $mehod;
+        return $method;
     }
 
     /**

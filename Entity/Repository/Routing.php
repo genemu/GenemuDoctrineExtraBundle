@@ -15,13 +15,24 @@ use Doctrine\ORM\EntityRepository;
 
 class Routing extends EntityRepository
 {
-    public function getMaxDate()
+    public function findAll()
     {
+        $qb = $this->createQueryBuilder('routing')
+            ->leftJoin('routing.routingparameters', 'routingparameters')
+            ->leftJoin('routing.view', 'view')
+            ->leftJoin('view.bundle', 'bundle_view')
+            ->leftJoin('routing.method', 'method')
+            ->leftJoin('method.controller', 'controller')
+            ->leftJoin('controller.bundle', 'bundle_controller');
 
-    }
+        $qb->select('partial routing.{id, pattern, name, ordering}')
+            ->addSelect('partial routingparameters.{id, name, defaultValue, requirement}')
+            ->addSelect('partial view.{id, name, format, engine, directory}')
+            ->addSelect('partial bundle_view.{id, name}')
+            ->addSelect('partial method.{id, name}')
+            ->addSelect('partial controller.{id, name}')
+            ->addSelect('partial bundle_controller.{id, name}');
 
-    public function findAllWithParameters()
-    {
-
+        return $qb->getQuery()->getResult();
     }
 }
