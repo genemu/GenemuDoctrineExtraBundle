@@ -27,13 +27,14 @@
             el.parent().attr('class', 'field').append(
                 $('<div>', {'class': 'description'}).html(el.html()),
                 $('<div>', {'class': 'actions'}).append(
-                    $('<button>', {
-                        type: 'button',
+                    $('<a>', {
+                        href: '#',
                         title: params.i18n.remove,
-                        onClick: 'return confirm(\''+params.i18n.confirm+'\');',
-                        'class': 'delete'
+                        'class': 'icon delete'
                     }).html(params.i18n.remove).click(function() {
-                        $(this).parents('.field').remove();
+                        if (confirm(params.i18n.confirm)) {
+                            $(this).parents('.field').remove();
+                        }
                     })
                 ));
 
@@ -52,7 +53,13 @@
             }
 
             el.after(
-                $('<button>', {type: 'button', title: params.i18n.add}).html(params.i18n.add).click(function() {
+                $('<a>', {
+                    href: '#',
+                    title: params.i18n.add,
+                    'class': 'add_collection'
+                }).html(params.i18n.add).append(
+                    $('<span>', {'class': 'add icon'})
+                ).click(function() {
                     methods.add_collection(jQuery(this).prev());
                 })
             );

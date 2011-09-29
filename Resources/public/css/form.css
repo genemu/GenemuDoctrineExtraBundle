@@ -25,34 +25,52 @@ form div.collection .field {
 form div.collection, form div.collection .description {
     float: left;
     width: 85%;
+    min-height: 30px;
 }
 
 form div.collection .actions {
     float: right;
 }
 
-form div.collection .actions button {
-    background: url(/bundles/genemudoctrineextra/images/icons.png);
+form .icon {
+    background: url(/bundles/genemudoctrineextra/images/icons-16.png);
     border: none;
-    width: 32px;
-    height: 32px;
+    width: 16px;
+    height: 16px;
     display: block;
     float: left;
     text-indent: 9999px;
     overflow: hidden;
+    margin: 0 5px;
 }
 
-form div.collection .actions .delete {
-    background-position: -64px -32px;
+form .icon.add {
+    background-position: 0 0;
+}
+
+form .icon.back {
+    background-position: -16px -16px;
+}
+
+form .icon.save {
+    background-position: 0 -16px;
+}
+
+form .icon.delete {
+    background-position: -16px 0;
+}
+
+form .add_collection {
+    float: right;
+    text-decoration: underline;
 }
 
 form .form_actions {
-    padding: 0 20px;
-    text-align: right;
+    padding: 5px 20px;
+    overflow: hidden;
 }
 
-form .form_actions input {
-    cursor: pointer;
-    padding: 0 3px;
-    width: auto;
+form .form_actions a {
+    float: left;
+    padding: 0 5px;
 }
