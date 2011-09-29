@@ -26,7 +26,6 @@ class DoctrineRouteLoader implements LoaderInterface
     {
         $this->registry = $registry;
         $this->resource = $resource;
-        $this->resource->updated();
     }
 
     public function load($entityName, $type = null)

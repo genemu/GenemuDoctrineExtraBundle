@@ -67,7 +67,7 @@ class UpdateCommand extends ContainerAwareCommand
                 $files->files()->name('*Controller.php')->in($dir);
 
                 foreach ($files as $file) {
-                    if ('Controller.php' != $controllerName = $file->getBasename('Controller.php')) {
+                    if ('Controller.php' !== $controllerName = $file->getBasename('Controller.php')) {
                         $ns = $class->getNamespace().'\\Controller';
 
                         if ($relativePath = $file->getRelativePath()) {
@@ -86,7 +86,7 @@ class UpdateCommand extends ContainerAwareCommand
                         $parent = $reflection->getParentClass();
                         if ($parent) {
                             foreach ($parent->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-                                if (preg_match('/Action/', $method->getName())) {
+                                if (preg_match('/^(.+)Action$/', $method->getName())) {
                                     $methods[strtr($method->getName(), array('Action' => ''))] = true;
                                 }
                             }

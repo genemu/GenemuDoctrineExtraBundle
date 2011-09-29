@@ -14,6 +14,7 @@ namespace Genemu\Bundle\DoctrineExtraBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Genemu\Bundle\DoctrineExtraBundle\DependencyInjection\Compiler\FormPass;
+use Genemu\Bundle\DoctrineExtraBundle\DependencyInjection\Compiler\RouterPass;
 
 /**
  * @author Olivier Chauvel <olchauvel@gmail.com>
@@ -27,5 +28,6 @@ class GenemuDoctrineExtraBundle extends Bundle
     {
         parent::build($container);
         $container->addCompilerPass(new FormPass());
+        $container->addCompilerPass(new RouterPass());
     }
 }

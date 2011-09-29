@@ -14,13 +14,20 @@ namespace Genemu\Bundle\DoctrineExtraBundle\Config\Resource;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Config\ConfigCache;
 
+/**
+ * Doctrine Resource
+ *
+ * @author Olivier Chauvel <olchauvel@gmail.com>
+ */
 class DoctrineResource
 {
+    protected $file;
     protected $cache;
 
     public function __construct($kernel)
     {
-        $this->cache = new ConfigCache($kernel->getCacheDir().'/genemu/routing.php', $kernel->isDebug());
+        $this->file = $kernel->getCacheDir().'/genemu/routing.php';
+        $this->cache = new ConfigCache($this->file, $kernel->isDebug());
     }
 
     public function updated()
@@ -30,8 +37,21 @@ class DoctrineResource
         $this->cache->write($date->getTimestamp());
     }
 
+    public function isFresh($timestamp)
+    {
+        if (!is_file($this->file)) {
+            return false;
+        }
+
+        if (filemtime($this->file) > $timestamp) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function getResource()
     {
-        return new FileResource($this->cache->__toString());
+        return new FileResource($this->file);
     }
 }
