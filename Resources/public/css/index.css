@@ -1,91 +1,42 @@
-#routings {
+#content .routings {
     list-style: none;
     margin: 0;
 }
 
-#routings li {
+#content .routings li {
     padding: 0 5px;
+    background-color: #F7F7F7;
     overflow: hidden;
-    background-color: #f7f7f7;
-
-    background-image: -moz-linear-gradient(-90deg, #e4e4e4, #FFFFFF);
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e4e4e4), to(#FFFFFF));
-    background-image: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#e4e4e4, endColorstr=#FFFFFF, GradientType=0);
-    zoom: 1;
-
-    background-image: linear-gradient(-90deg, #e4e4e4, #FFFFFF);
 }
 
-#routings li.even {
-    background: #FFF;
+#content .routings li.even {
+    background-color: #FFFFFF;
 }
 
-#routings .description {
+#content .routings .description {
     float: left;
+    width: 75%;
 }
 
-#routings .description p {
-    overflow: hidden;
+#content .routings .index {
+    font-size: 1.1em;
 }
 
-#routings .description .name {
+#content .routings .action {
+    float: right;
+    width: 25%;
+    padding-top: 20px;
+}
+
+#content .routings .description .name {
     padding-left: 15px;
 }
 
-#routings .description .pattern {
-    padding-left: 30px;
-}
-
-#routings .description strong {
-    width: 80px;
+#content .routings .description .name .option {
+    width: 15%;
     float: left;
 }
 
-#routings .description .pattern strong {
-    width: 50px;
-}
-
-#routings .description .name strong {
-    float: none;
-}
-
-#routings .action {
-    height: 35px;
-    padding: 25px 0;
-    float: right;
-}
-
-#routings .action a {
-    background-image: url(/bundles/genemudoctrineextra/images/icons.png);
-    background-repeat: no-repeat;
-    display: block;
-    float: left;
-    width: 32px;
-    height: 32px;
-    text-indent: 999px;
-    margin: 0 5px;
-}
-
-#routings .action a.moveup {
-    background-position: 0 0;
-}
-
-#routings .action a.movedown {
-    background-position: 0 -32px;
-}
-
-#routings .action a.publish {
-    background-position: -32px 0;
-}
-
-#routings .action a.unpublish {
-    background-position: -32px -32px;
-}
-
-#routings .action a.edit {
-    background-position: -64px 0;
-}
-
-#routings .action a.remove {
-    background-position: -64px -32px;
+#content .actions {
+    padding: 10px 25px;
 }

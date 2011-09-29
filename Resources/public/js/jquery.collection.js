@@ -30,7 +30,7 @@
                     $('<a>', {
                         href: '#',
                         title: params.i18n.remove,
-                        'class': 'icon delete'
+                        'class': 'icon-16 delete'
                     }).html(params.i18n.remove).click(function() {
                         if (confirm(params.i18n.confirm)) {
                             $(this).parents('.field').remove();
@@ -58,7 +58,7 @@
                     title: params.i18n.add,
                     'class': 'add_collection'
                 }).html(params.i18n.add).append(
-                    $('<span>', {'class': 'add icon'})
+                    $('<span>', {'class': 'icon-16 add'})
                 ).click(function() {
                     methods.add_collection(jQuery(this).prev());
                 })

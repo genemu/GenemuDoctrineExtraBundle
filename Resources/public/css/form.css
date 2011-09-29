@@ -32,34 +32,6 @@ form div.collection .actions {
     float: right;
 }
 
-form .icon {
-    background: url(/bundles/genemudoctrineextra/images/icons-16.png);
-    border: none;
-    width: 16px;
-    height: 16px;
-    display: block;
-    float: left;
-    text-indent: 9999px;
-    overflow: hidden;
-    margin: 0 5px;
-}
-
-form .icon.add {
-    background-position: 0 0;
-}
-
-form .icon.back {
-    background-position: -16px -16px;
-}
-
-form .icon.save {
-    background-position: 0 -16px;
-}
-
-form .icon.delete {
-    background-position: -16px 0;
-}
-
 form .add_collection {
     float: right;
     text-decoration: underline;

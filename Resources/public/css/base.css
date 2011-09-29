@@ -83,3 +83,63 @@ button {
 
     background-image: linear-gradient(-90deg, #e4e4e4, #FFFFFF);
 }
+
+.icon-16, .icon-32 {
+    border: none;
+    display: block;
+    float: left;
+    text-indent: 9999px;
+    overflow: hidden;
+    margin: 0 5px;
+}
+
+.icon-16 {
+    width: 16px;
+    height: 16px;
+    background: url(/bundles/genemudoctrineextra/images/icons-16.png);
+}
+
+.icon-16.add {
+    background-position: 0 0;
+}
+
+.icon-16.back {
+    background-position: -16px -16px;
+}
+
+.icon-16.save {
+    background-position: 0 -16px;
+}
+
+.icon-16.delete {
+    background-position: -16px 0;
+}
+
+.icon-32 {
+    width: 32px;
+    height: 32px;
+    background: url(/bundles/genemudoctrineextra/images/icons-32.png);
+}
+
+.icon-32.moveup {
+    background-position: 0 0;
+}
+
+.icon-32.movedown {
+    background-position: 0 -32px;
+}
+
+.icon-32.publish {
+    background-position: -32px 0;
+}
+
+.icon-32.unpublish {
+    background-position: -32px -32px;
+}
+
+.icon-32.edit {
+    background-position: -64px 0;
+}
+
+.icon-32.remove {
+    background-position: -64px -32px;

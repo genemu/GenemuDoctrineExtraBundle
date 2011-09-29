@@ -6,16 +6,16 @@
 {% endblock links %}
 
 {% block body %}
-<ul id="routings">
+<ul class="routings">
     {% for routing in routings %}
         {% set publish = routing.publish?'Unpublish':'Publish' %}
         <li class="routing {{ loop.index is divisibleby(2)?'even':'odd' }}">
             <div class="description">
-                <p>
+                <p class="index">
                     <strong>{{ routing.name }}:</strong>
                 </p>
                 <p class="name">
-                    <strong>{% trans %}patterns{% endtrans %}:</strong>
+                    <strong class="option">{% trans %}patterns{% endtrans %}:</strong>
                     <span>{ </span>
                     {% for pattern in routing.patterns %}
                         <strong>{{ pattern.locale }}:</strong>
@@ -24,7 +24,7 @@
                     <span> }</span>
                 </p>
                 <p class="name">
-                    <strong>{% trans %}defaults{% endtrans %}:</strong>
+                    <strong class="option">{% trans %}defaults{% endtrans %}:</strong>
                     <span>{ </span>
                     <strong>{% trans %}_controller{% endtrans %}:</strong>
                     <span>{{ routing.method }}</span>
@@ -38,7 +38,7 @@
                     <span> }</span>
                 </p>
                 <p class="name">
-                    <strong>{% trans %}requirements{% endtrans %}:</strong>
+                    <strong class="option">{% trans %}requirements{% endtrans %}:</strong>
                     <span>{ </span>
                     {% for parameter in routing.routingparameters %}
                         {% if parameter.requirement %}
@@ -49,31 +49,34 @@
                     <span> }</span>
                 </p>
                 <p class="name">
-                    <strong>{% trans %}template{% endtrans %}:</strong>
+                    <strong class="option">{% trans %}template{% endtrans %}:</strong>
                     <span>{{ routing.view }}</span>
                 </p>
             </div>
             <div class="action">
-                <a class="moveup" title="{% trans %}Move up{% endtrans %}" href="{{ path('routing_move', {'id': routing.id, 'type': 'up'}) }}">
+                <a class="icon-32 moveup" title="{% trans %}Move up{% endtrans %}" href="{{ path('routing_move', {'id': routing.id, 'type': 'up'}) }}">
                     {% trans %}MoveUp{% endtrans %}
                 </a>
-                <a class="movedown" title="{% trans %}Move down{% endtrans %}" href="{{ path('routing_move', {'id': routing.id, 'type': 'down'}) }}">
+                <a class="icon-32 movedown" title="{% trans %}Move down{% endtrans %}" href="{{ path('routing_move', {'id': routing.id, 'type': 'down'}) }}">
                     {% trans %}MoveDown{% endtrans %}
                 </a>
-                <a class="{{ publish|lower }}" title="{{ publish|trans }}" href="{{ path('routing_publish', {'id': routing.id}) }}">
+                <a class="icon-32 {{ publish|lower }}" title="{{ publish|trans }}" href="{{ path('routing_publish', {'id': routing.id}) }}">
                     {{ publish|trans }}
                 </a>
-                <a class="edit" title="{% trans %}Edit{% endtrans %}" href="{{ path('routing_edit', {'id': routing.id}) }}">
+                <a class="icon-32 edit" title="{% trans %}Edit{% endtrans %}" href="{{ path('routing_edit', {'id': routing.id}) }}">
                     {% trans %}Edit{% endtrans %}
                 </a>
-                <a class="remove" onclick="return confirm('{% trans %}Confirm delete routing{% endtrans %}');" title="{% trans %}Remove{% endtrans %}" href="{{ path('routing_remove', {'id': routing.id}) }}">
+                <a class="icon-32 remove" onclick="return confirm('{% trans %}Confirm delete routing{% endtrans %}');" title="{% trans %}Remove{% endtrans %}" href="{{ path('routing_remove', {'id': routing.id}) }}">
                     {% trans %}Remove{% endtrans %}
                 </a>
             </div>
         </li>
     {% endfor %}
 </ul>
-<div id="actions">
-    <a href="{{ path('routing_new') }}">{% trans %}New{% endtrans %}</a>
+<div class="actions">
+    <a href="{{ path('routing_new') }}" title="{% trans %}Add routing{% endtrans %}">
+        <span class="icon-16 add"></span>
+        <span>{% trans %}Add routing{% endtrans %}</span>
+    </a>
 </div>
 {% endblock body %}
