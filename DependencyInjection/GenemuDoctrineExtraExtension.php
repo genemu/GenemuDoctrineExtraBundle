@@ -16,12 +16,19 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
+/**
+ * @author Olivier Chauvel <olchauvel@gmail.com>
+ */
 class GenemuDoctrineExtraExtension extends Extension
 {
+    /**
+     * {@inheritdoc}
+     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('template.xml');
+        $loader->load('cache.xml');
         $loader->load('routing.xml');
         $loader->load('twig.xml');
     }

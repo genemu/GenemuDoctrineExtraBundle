@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormBuilder;
 /**
  * @author Olivier Chauvel <olchauvel@gmail.com>
  */
-class RoutingParameterType extends AbstractType
+class CacheType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -25,9 +25,10 @@ class RoutingParameterType extends AbstractType
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('defaultValue')
-            ->add('requirement');
+            ->add('public')
+            ->add('expires', 'datetime', array('attr' => array('class' => 'date')))
+            ->add('smaxage')
+            ->add('maxage');
     }
 
     /**
@@ -36,7 +37,7 @@ class RoutingParameterType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
-            'data_class' => 'Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter'
+            'data_class' => 'Genemu\Bundle\DoctrineExtraBundle\Entity\Cache'
         );
     }
 
@@ -45,6 +46,6 @@ class RoutingParameterType extends AbstractType
      */
     public function getName()
     {
-        return 'genemu_routing_parameter';
+        return 'genemu_cache';
     }
 }

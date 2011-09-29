@@ -37,6 +37,18 @@ form .add_collection {
     text-decoration: underline;
 }
 
+form div.date {
+    overflow: hidden;
+}
+
+form div.date div {
+    float: left;
+}
+
+form div.date select {
+    width: auto;
+}
+
 form .form_actions {
     padding: 5px 20px;
     overflow: hidden;

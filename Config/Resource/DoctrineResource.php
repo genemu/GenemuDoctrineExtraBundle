@@ -11,6 +11,7 @@
 
 namespace Genemu\Bundle\DoctrineExtraBundle\Config\Resource;
 
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Config\ConfigCache;
 
@@ -24,7 +25,7 @@ class DoctrineResource
     protected $file;
     protected $cache;
 
-    public function __construct($kernel)
+    public function __construct(Kernel $kernel)
     {
         $this->file = $kernel->getCacheDir().'/genemu/routing.php';
         $this->cache = new ConfigCache($this->file, $kernel->isDebug());

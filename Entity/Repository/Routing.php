@@ -22,6 +22,7 @@ class Routing extends EntityRepository
             ->leftJoin('routing.routingparameters', 'routingparameters')
             ->leftJoin('routing.view', 'view')
             ->leftJoin('view.bundle', 'bundle_view')
+            ->leftJoin('routing.cache', 'cache')
             ->leftJoin('routing.method', 'method')
             ->leftJoin('method.controller', 'controller')
             ->leftJoin('controller.bundle', 'bundle_controller');
@@ -33,7 +34,8 @@ class Routing extends EntityRepository
             ->addSelect('partial bundle_view.{id, name}')
             ->addSelect('partial method.{id, name}')
             ->addSelect('partial controller.{id, name}')
-            ->addSelect('partial bundle_controller.{id, name}');
+            ->addSelect('partial bundle_controller.{id, name}')
+            ->addSelect('partial cache.{id, expires, smaxage, maxage}');
 
         if ($publish) {
             $qb->where($qb->expr()->eq('routing.publish', $qb->expr()->literal(true)));

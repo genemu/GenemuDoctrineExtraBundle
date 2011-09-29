@@ -14,8 +14,16 @@ namespace Genemu\Bundle\DoctrineExtraBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
+/**
+ * Modify class router
+ *
+ * @author Olivier Chauvel <olchauvel@gmail.com>
+ */
 class RouterPass implements CompilerPassInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function process(ContainerBuilder $container)
     {
         $container->setParameter('router.class', 'Genemu\Bundle\DoctrineExtraBundle\Routing\Router');

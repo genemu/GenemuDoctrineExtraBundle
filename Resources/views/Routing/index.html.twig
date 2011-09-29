@@ -52,6 +52,33 @@
                     <strong class="option">{% trans %}template{% endtrans %}:</strong>
                     <span>{{ routing.view }}</span>
                 </p>
+                {% if routing.cache and (routing.cache.expires or routing.cache.smaxage or routing.cache.maxage) %}
+                <p class="name">
+                    <strong class="option">{% trans %}cache{% endtrans %}:</strong>
+                    <span>{ </span>
+                    {% if routing.cache.expires %}
+                        <strong>{% trans %}expires{% endtrans %}:</strong>
+                        <span>{{ routing.cache.expires|date('Y, d M') }}</span>
+                        {% if routing.cache.smaxage or routing.cache.maxage %}
+                            <span>, </span>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if routing.cache.smaxage %}
+                        <strong>{% trans %}smaxage{% endtrans %}:</strong>
+                        <span>{{ routing.cache.smaxage }}</span>
+                        {% if routing.cache.maxage %}
+                            <span>, </span>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if routing.cache.maxage %}
+                        <strong>{% trans %}maxage{% endtrans %}:</strong>
+                        <span>{{ routing.cache.maxage }}</span>
+                    {% endif %}
+                    <span> }</span>
+                </p>
+                {% endif %}
             </div>
             <div class="action">
                 <a class="icon-32 moveup" title="{% trans %}Move up{% endtrans %}" href="{{ path('routing_move', {'id': routing.id, 'type': 'up'}) }}">

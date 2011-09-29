@@ -17,17 +17,32 @@ use Symfony\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\Routing\RouteCollection;
 use Genemu\Bundle\DoctrineExtraBundle\Config\Resource\DoctrineResource;
 
+/**
+ * @author Olivier Chauvel <olchauvel@gmail.com>
+ */
 class DoctrineRouteLoader implements LoaderInterface
 {
     protected $registry;
     protected $resource;
 
+    /**
+     * Construct
+     *
+     * @param Registry         $registry
+     * @param DoctrineResource $resource
+     */
     public function __construct(Registry $registry, DoctrineResource $resource)
     {
         $this->registry = $registry;
         $this->resource = $resource;
     }
 
+    /**
+     * Load routing to Entity
+     *
+     * @param string $entityName
+     * @param string $type
+     */
     public function load($entityName, $type = null)
     {
         $repository = $this->registry->getRepository($entityName);
@@ -44,6 +59,14 @@ class DoctrineRouteLoader implements LoaderInterface
         return $collection;
     }
 
+    /**
+     * Test supports
+     *
+     * @param string $resource
+     * @param string $type
+     *
+     * @return boolean
+     */
     public function supports($resource, $type = null)
     {
         return is_string($resource) && ('doctrine' === $type);

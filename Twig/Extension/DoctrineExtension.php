@@ -14,17 +14,29 @@ namespace Genemu\Bundle\DoctrineExtraBundle\Twig\Extension;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Session;
 
+/**
+ * @author Olivier Chauvel <olchauvel@gmail.com>
+ */
 class DoctrineExtension extends \Twig_Extension
 {
     protected $router;
     protected $session;
 
+    /**
+     * Construct
+     *
+     * @param Router $router
+     * @param Session $session
+     */
     public function __construct(Router $router, Session $session)
     {
         $this->router = $router;
         $this->session = $session;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getFunctions()
     {
         return array(
@@ -32,19 +44,24 @@ class DoctrineExtension extends \Twig_Extension
         );
     }
 
+    /**
+     * doDoctrineFilter
+     * url routing to i18n
+     *
+     * @param string  $name
+     * @param array   $parameters
+     * @param boolean $absolute
+     *
+     * @return string $url
+     */
     public function doDoctrineFilter($name, $parameters = array(), $absolute = false)
     {
-        /*
-        $collection = $this->router->getRouteCollection();
-
-        if (null !== $collection->get($name.'.'.$this->session->getLocale())) {
-            return $this->router->generate($name.'.'.$this->session->getLocale(), $parameters, $absolute);
-        }
-         */
-
         return $this->router->generate($name, $parameters, $absolute);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'genemu_extension_doctrine';

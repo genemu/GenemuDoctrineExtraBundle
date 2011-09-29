@@ -20,6 +20,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class RoutingType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
@@ -54,9 +57,13 @@ class RoutingType extends AbstractType
                 'type' => new RoutingParameterType(),
                 'allow_add' => true,
                 'allow_delete' => true
-            ));
+            ))
+            ->add('cache', new CacheType(), array('attr' => array('class' => 'collection')));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultOptions(array $options)
     {
         return array(
@@ -64,6 +71,9 @@ class RoutingType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'genemu_routing';

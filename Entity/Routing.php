@@ -12,10 +12,8 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraint as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Routing\Route;
-use Genemu\Bundle\DoctrineExtraBundle\Routing\RoutingInterface;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Routing
@@ -27,7 +25,7 @@ use Genemu\Bundle\DoctrineExtraBundle\Routing\RoutingInterface;
  *     repositoryClass="Genemu\Bundle\DoctrineExtraBundle\Entity\Repository\Routing"
  * )
  */
-class Routing extends Entity implements RoutingInterface
+class Routing extends Entity
 {
     /**
      * @var string $name
@@ -110,6 +108,21 @@ class Routing extends Entity implements RoutingInterface
      * )
      */
     protected $view;
+
+    /**
+     * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Cache $cache
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Cache",
+     *     inversedBy="routings",
+     *     cascade={"all"}
+     * )
+     * @ORM\JoinColumn(
+     *     name="cache_id",
+     *     referencedColumnName="id"
+     * )
+     */
+    protected $cache;
 
     /**
      * Construct
@@ -288,6 +301,26 @@ class Routing extends Entity implements RoutingInterface
     }
 
     /**
+     * set cache
+     *
+     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Cache $cache
+     */
+    public function setCache(Cache $cache)
+    {
+        $this->cache = $cache;
+    }
+
+    /**
+     * get cache
+     *
+     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Cache $cache
+     */
+    public function getCache()
+    {
+        return $this->cache;
+    }
+
+    /**
      * get routes
      *
      * @return array $routes
@@ -305,6 +338,16 @@ class Routing extends Entity implements RoutingInterface
 
         if ($this->view) {
             $defaults['_genemu_template'] = $this->view->__toString();
+        }
+
+        if ($this->cache) {
+            $defaults = array_merge($defaults, array(
+                '_genemu_cache' => true,
+                '_genemu_cache_public' => $this->cache->getPublic()?true:false,
+                '_genemu_cache_expires' => $this->cache->getExpires()?$this->cache->getExpires()->getTimestamp():null,
+                '_genemu_cache_smaxage' => $this->cache->getSmaxage(),
+                '_genemu_cache_maxage' => $this->cache->getMaxage()
+            ));
         }
 
         foreach ($this->routingparameters as $parameter) {

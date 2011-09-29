@@ -16,6 +16,9 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @author Olivier Chauvel <olchauvel@gmail.com>
+ */
 class TemplateListener
 {
     protected $templating;
@@ -24,7 +27,8 @@ class TemplateListener
     /**
      * Construct
      *
-     * @param ContainerInterface $container
+     * @param TwigEngine $templating
+     * @param Session $session
      */
     public function __construct(TwigEngine $templating, Session $session)
     {

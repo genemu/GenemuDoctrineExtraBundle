@@ -19,6 +19,9 @@ use Symfony\Component\Form\FormBuilder;
  */
 class PatternType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
@@ -26,6 +29,9 @@ class PatternType extends AbstractType
             ->add('name');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultOptions(array $options)
     {
         return array(
@@ -33,6 +39,9 @@ class PatternType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'genemu_pattern';

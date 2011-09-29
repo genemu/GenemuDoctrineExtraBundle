@@ -15,8 +15,14 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle;
 
+/**
+ * @author Olivier Chauvel <olchauvel@gmail.com>
+ */
 class LoadBundleData extends AbstractFixture implements OrderedFixtureInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function load($manager)
     {
         $bundle = new Bundle();
@@ -29,6 +35,9 @@ class LoadBundleData extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getOrder()
     {
         return 1;

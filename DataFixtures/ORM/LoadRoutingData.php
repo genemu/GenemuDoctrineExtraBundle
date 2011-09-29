@@ -17,6 +17,9 @@ use Genemu\Bundle\DoctrineExtraBundle\Entity\Routing;
 use Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern;
 use Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter;
 
+/**
+ * @author Olivier Chauvel <olchauvel@gmail.com>
+ */
 class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
 {
     protected $routings = array(
@@ -53,6 +56,9 @@ class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
         )
     );
 
+    /**
+     * {@inheritdoc}
+     */
     public function load($manager)
     {
         foreach ($this->routings as $name => $values) {
@@ -92,6 +98,9 @@ class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getOrder()
     {
         return 4;
