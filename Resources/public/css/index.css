@@ -1,22 +1,23 @@
-body {
-    width: 80%;
-    margin: 0 auto;
-}
-
 #routings {
     list-style: none;
     margin: 0;
-    border: 1px solid #888;
 }
 
 #routings li {
     padding: 0 5px;
     overflow: hidden;
-    background: #CCC;
+    background-color: #f7f7f7;
+
+    background-image: -moz-linear-gradient(-90deg, #e4e4e4, #FFFFFF);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e4e4e4), to(#FFFFFF));
+    background-image: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr=#e4e4e4, endColorstr=#FFFFFF, GradientType=0);
+    zoom: 1;
+
+    background-image: linear-gradient(-90deg, #e4e4e4, #FFFFFF);
 }
 
 #routings li.even {
-    background: #EEE;
+    background: #FFF;
 }
 
 #routings .description {

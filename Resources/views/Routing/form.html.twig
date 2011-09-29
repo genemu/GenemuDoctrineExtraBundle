@@ -1,6 +1,6 @@
 <form action="" method="post" {{ form_enctype(form) }}>
-{{ form_widget(form) }}
-<input type="submit" />
+    {{ form_widget(form) }}
+    <input type="submit" />
 </form>
 <a href="{{ path('routing_index') }}" title="{% trans %}Routing manager{% endtrans %}">
     {% trans %}Go Routing Manager{% endtrans %}
