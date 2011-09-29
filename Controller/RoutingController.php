@@ -18,7 +18,7 @@ use Genemu\Bundle\DoctrineExtraBundle\Form\Type\RoutingType;
 
 class RoutingController extends Controller
 {
-    public function indexAction()
+    public function indexAction($page = 1)
     {
         return array(
             'routings' => $this->getDoctrine()->getRepository('GenemuDoctrineExtraBundle:Routing')->findRoutingAll(false)

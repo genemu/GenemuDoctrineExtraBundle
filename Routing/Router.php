@@ -59,9 +59,9 @@ class Router extends BaseRouter
      *
      * @return boolean
      */
-    protected function isFresh($file, $class)
+    protected function isFresh($file)
     {
-        if (!$file->isFresh($class)) {
+        if (!is_file($file)) {
             return false;
         }
 
@@ -93,7 +93,7 @@ class Router extends BaseRouter
         $class = $this->options[$key.'_cache_class'];
         $cache = new ConfigCache($this->options['cache_dir'].'/'.$class.'.php', $this->options['debug']);
 
-        if (!$this->isFresh($cache, $class)) {
+        if (!$this->isFresh($cache)) {
             $this->cache->updated();
 
             $dumper = new $this->options[$key.'_dumper_class']($this->getRouteCollection());
