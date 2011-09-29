@@ -5,13 +5,13 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="genemu.listener.template.class">Genemu\Bundle\DoctrineExtraBundle\EventListener\TemplateListener</parameter>
+        <parameter key="genemu.extension.doctrine.class">Genemu\Bundle\DoctrineExtraBundle\Twig\Extension\DoctrineExtension</parameter>
     </parameters>
 
     <services>
-        <service id="genemu.listener.template" class="%genemu.listener.template.class%">
-            <tag name="kernel.event_listener" event="kernel.view" method="onKernelView" />
-            <argument type="service" id="templating" />
+        <service id="genemu.extension.doctrine" class="%genemu.extension.doctrine.class%">
+            <tag name="twig.extension" />
+            <argument type="service" id="router" />
             <argument type="service" id="session" />
         </service>
     </services>

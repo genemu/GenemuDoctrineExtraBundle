@@ -15,36 +15,78 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Genemu\Bundle\DoctrineExtraBundle\Entity\Routing;
 use Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern;
+use Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter;
 
 class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
 {
+    protected $routings = array(
+        'index' => array(
+            '/routing'
+        ),
+        'edit' => array(
+            '/routing/edit/{id}',
+            array(
+                'id' => array(null, '\d+')
+            )
+        ),
+        'new' => array(
+            '/routing/new'
+        ),
+        'remove' => array(
+            '/routing/remove/{id}',
+            array(
+                'id' => array(null, '\d+')
+            )
+        ),
+        'publish' => array(
+            '/routing/publish/{id}',
+            array(
+                'id' => array(null, '\d+')
+            )
+        ),
+        'move' => array(
+            '/routing/move/{type}/{id}',
+            array(
+                'id' => array(null, '\d+'),
+                'type' => array('up', 'up|down')
+            )
+        )
+    );
+
     public function load($manager)
     {
-        foreach (array('index', 'edit', 'new', 'remove', 'publish', 'move') as $name) {
-            $pattern = '/routing';
+        foreach ($this->routings as $name => $values) {
+            $routing = new Routing();
+            $routing->setName('routing_'.$name);
+            $routing->setPublish(true);
+            $routing->setMethod($this->getReference('genemu_doctrine_extra_method_'.$name));
+            $routing->setView($this->getReference('genemu_doctrine_extra_view_'.$name));
 
-            if (in_array($name, array('edit', 'remove', 'publish'))) {
-                $pattern .= '/'.$name.'/{id}';
-            } elseif ($name == 'new') {
-                $pattern .= '/new';
-            } elseif ($name == 'move') {
-                $pattern .= '/move/{type}/{id}';
+            if (isset($values[1])) {
+                foreach ($values[1] as $nameP => $params) {
+                    $parameter = new RoutingParameter();
+                    $parameter->setName($nameP);
+
+                    if (isset($params[0]) && $params[0]) {
+                        $parameter->setDefaultValue($params[0]);
+                    }
+
+                    if (isset($params[1]) && $params[1]) {
+                        $parameter->setRequirement($params[1]);
+                    }
+
+                    $manager->persist($parameter);
+                    $routing->addRoutingParameters($parameter);
+                }
             }
+            $manager->persist($routing);
 
-            $route = new Routing();
-            $route->setName('routing_'.$name);
-            $route->setPublish(true);
-            $route->setMethod($this->getReference('genemu_doctrine_extra_method_'.$name));
-            $route->setView($this->getReference('genemu_doctrine_extra_view_'.$name));
+            $pattern = new Pattern();
+            $pattern->setName($values[0]);
+            $pattern->setLocale('en');
+            $pattern->setRouting($routing);
 
-            $manager->persist($route);
-
-            $pat = new Pattern();
-            $pat->setName($pattern);
-            $pat->setLocale('en');
-            $pat->setRouting($route);
-
-            $manager->persist($pat);
+            $manager->persist($pattern);
         }
 
         $manager->flush();

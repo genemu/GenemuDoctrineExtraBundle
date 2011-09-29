@@ -321,8 +321,17 @@ class Routing extends Entity implements RoutingInterface
 
         $routes = array();
         foreach ($this->patterns as $pattern) {
-            $name = $this->name.(($pattern->getLocale() == 'en')?'':'.'.$pattern->getLocale());
-            $routes[$name] = new Route($pattern->getName(), $defaults, $requirements);
+            $locale = $pattern->getLocale();
+            $defaults['_genemu_culture'] = $locale;
+
+            $route = new Route($pattern->getName(), $defaults, $requirements);
+
+            if ($locale == 'en') {
+                $routes[$this->name] = $route;
+            }
+
+            $routes[$this->name.'.'.$locale] = $route;
+            $routes[$this->name.'.'.$locale.'_'.strtoupper($locale)] = $route;
         }
 
         return $routes;

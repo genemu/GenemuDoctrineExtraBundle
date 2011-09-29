@@ -13,6 +13,7 @@ namespace Genemu\Bundle\DoctrineExtraBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Genemu\Bundle\DoctrineExtraBundle\Entity\Routing;
+use Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern;
 use Genemu\Bundle\DoctrineExtraBundle\Form\Type\RoutingType;
 
 class RoutingController extends Controller
@@ -52,6 +53,7 @@ class RoutingController extends Controller
     public function newAction()
     {
         $routing = new Routing();
+        $routing->addPattern(new Pattern());
 
         if (true === $form = $this->proccessForm($routing)) {
             foreach ($routing->getPatterns() as $pattern) {

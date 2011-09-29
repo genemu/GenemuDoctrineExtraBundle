@@ -12,21 +12,24 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\HttpFoundation\Session;
 use Symfony\Component\HttpFoundation\Response;
 
 class TemplateListener
 {
-    protected $container;
+    protected $templating;
+    protected $session;
 
     /**
      * Construct
      *
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(TwigEngine $templating, Session $session)
     {
-        $this->container = $container;
+        $this->templating = $templating;
+        $this->session = $session;
     }
 
     /**
@@ -36,19 +39,19 @@ class TemplateListener
     {
         $request = $event->getRequest();
         $parameters = $event->getControllerResult();
+        $locale = $this->session->getLocale();
 
+        $template = $request->get('_genemu_template');
         if (!$parameters) {
             $parameters = array();
         }
 
-        if (!is_array($parameters)) {
+        if (!is_array($parameters) || !$template) {
             return $parameters;
         }
 
-        if (!$template = $request->get('_genemu_template')) {
-            return $parameters;
-        }
+        $parameters['culture'] = substr($locale, 0, strpos($locale, '_'));
 
-        $event->setResponse(new Response($this->container->get('templating')->render($template, $parameters)));
+        $event->setResponse(new Response($this->templating->render($template, $parameters)));
     }
 }
