@@ -1,39 +1,58 @@
-form {
-    text-align: left;
-    width: 80%;
-    margin: 0 auto;
-    border: 1px solid #888;
-}
-
 form label {
-    width: 15%;
-    display: block;
+    font-weight: bold;
     float: left;
+    width: 15%;
 }
 
-form div {
+form > div > div, form div.collection .field {
+    overflow: hidden;
     padding: 5px;
 }
 
-form input, form textarea, form div.collection {
+form input {
     width: 80%;
-    padding: 0;
+}
+
+form select {
+    width: 81%;
+}
+
+form div.collection .field {
+    border: 1px solid #bbb;
+    margin: 5px 0;
+}
+
+form div.collection, form div.collection .description {
+    float: left;
+    width: 85%;
+}
+
+form div.collection .actions {
     float: right;
+}
+
+form div.collection .actions button {
+    background: url(/bundles/genemudoctrineextra/images/icons.png);
+    border: none;
+    width: 32px;
+    height: 32px;
+    display: block;
+    float: left;
+    text-indent: 9999px;
     overflow: hidden;
 }
 
-form div.collections div {
-    padding: 0;
+form div.collection .actions .delete {
+    background-position: -64px -32px;
 }
 
-form .collections label {
-    float: none;
+form .form_actions {
+    padding: 0 20px;
+    text-align: right;
 }
 
-form textarea {
-    height: 100px;
-}
-
-form .clear {
-    clear: both;
+form .form_actions input {
+    cursor: pointer;
+    padding: 0 3px;
+    width: auto;
 }

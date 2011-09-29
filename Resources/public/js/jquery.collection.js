@@ -10,7 +10,7 @@
     var params = {
         i18n: {
             add: 'Add collection',
-            edit: 'Edit',
+            confirm: 'Are you sure ?',
             remove: 'Remove'
         }
     };
@@ -24,27 +24,21 @@
             methods.create_bandeau(node.children().filter('div'));
         },
         create_bandeau: function (el) {
-            el.hide().prev().hide();
-
-            bandeau = $('<div>', {'class': 'description'});
-            el.find('label').each(function () {
-                title = $(this).text();
-                value = $(this).next().val();
-
-                bandeau.append($('<p>').html('<p><strong>'+title+':</strong> '+value+'</p>'));
-            });
-
-            el.parent().prepend($('<div>', {'class': 'bandeau'}).append(
-                bandeau,
+            el.parent().attr('class', 'field').append(
+                $('<div>', {'class': 'description'}).html(el.html()),
                 $('<div>', {'class': 'actions'}).append(
-                    $('<button>', {'type': 'button', 'class': 'edit'}).html(params.i18n.edit).click(function() {
-                        $(this).parents('.bandeau').siblings('div').toggle();
-                    }),
-                    $('<button>', {'type': 'button', 'class': 'delete'}).html(params.i18n.remove).click(function() {
-                        $(this).parents('.bandeau').parent().remove();
+                    $('<button>', {
+                        type: 'button',
+                        title: params.i18n.remove,
+                        onClick: 'return confirm(\''+params.i18n.confirm+'\');',
+                        'class': 'delete'
+                    }).html(params.i18n.remove).click(function() {
+                        $(this).parents('.field').remove();
                     })
-                )
-            ));
+                ));
+
+            el.prev().remove();
+            el.remove();
         },
         init: function (el) {
             nodes = el.children().children();
@@ -53,8 +47,12 @@
                 methods.create_bandeau($(this));
             });
 
+            if (!el.hasClass('collection')) {
+                el.addClass('collection');
+            }
+
             el.after(
-                $('<button>', {'type': 'button'}).html(params.i18n.add).click(function() {
+                $('<button>', {type: 'button', title: params.i18n.add}).html(params.i18n.add).click(function() {
                     methods.add_collection(jQuery(this).prev());
                 })
             );

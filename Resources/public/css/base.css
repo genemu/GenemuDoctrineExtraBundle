@@ -62,6 +62,10 @@ input, button, select {
     vertical-align: middle;
 }
 
+button {
+    cursor: pointer;
+}
+
 #header, #content {
     width: 80%;
     margin: 0 auto;
