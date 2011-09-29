@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
- (function($) {
+ (function ($) {
     var params = {
         i18n: {
             add: 'Add collection',
@@ -61,7 +61,7 @@
         }
     }
 
-    $.fn.genemuCollection = function(options) {
+    $.fn.genemuCollection = function (options) {
         params = $.extend(params, options);
 
         $this = $(this);
