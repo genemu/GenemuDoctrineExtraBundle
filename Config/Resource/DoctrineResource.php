@@ -38,6 +38,10 @@ class DoctrineResource implements ResourceInterface
 
     public function isFreshCache(ConfigCache $cache)
     {
+        if (!is_file($cache->__toString())) {
+            return false;
+        }
+
         $timestamp = filemtime($cache->__toString());
         if (!$this->isFresh($timestamp) || !$cache->isFresh()) {
             $this->updated($timestamp);
@@ -54,10 +58,13 @@ class DoctrineResource implements ResourceInterface
             return false;
         }
 
-        if (
-            filemtime($this->file) > $timestamp ||
-            file_get_contents($this->file) > $timestamp
-        ) {
+        if (!file_get_contents($this->file)) {
+            $this->updated($timestamp);
+
+            return true;
+        }
+
+        if (file_get_contents($this->file) > $timestamp) {
             return false;
         }
 

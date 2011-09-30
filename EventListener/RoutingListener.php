@@ -78,7 +78,8 @@ class RoutingListener
             $entity instanceof RoutingParameter ||
             $entity instanceof Cache
         ) {
-            $this->resource->updated($entity->getUpdatedAt()->getTimestamp());
+            $date = new \DateTime();
+            $this->resource->updated($date->getTimestamp());
         }
     }
 }

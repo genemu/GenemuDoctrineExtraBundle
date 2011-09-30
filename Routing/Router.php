@@ -15,8 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router as BaseRouter;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Config\ConfigCache;
-use Symfony\Component\Routing\RouteCollection;
-use Genemu\Bundle\DoctrineExtraBundle\Config\ConfigDoctrineCache;
 
 /**
  * This Router creates the Loader when the cache is empty or database is modify
