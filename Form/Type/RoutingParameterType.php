@@ -26,7 +26,7 @@ class RoutingParameterType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('defaultValue')
+            ->add('default')
             ->add('requirement');
     }
 

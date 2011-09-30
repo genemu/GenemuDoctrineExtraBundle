@@ -53,7 +53,7 @@ class RoutingType extends AbstractType
                         ->orderBy('bundle.name, view.directory, view.name');
                 }
             ))
-            ->add('routingparameters', 'collection', array(
+            ->add('parameters', 'collection', array(
                 'type' => new RoutingParameterType(),
                 'allow_add' => true,
                 'allow_delete' => true

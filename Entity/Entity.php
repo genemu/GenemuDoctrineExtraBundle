@@ -13,6 +13,7 @@ namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Entity
@@ -27,6 +28,7 @@ abstract class Entity
      * @ORM\Column(type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Assert\Type("integer")
      */
     protected $id;
 
@@ -35,6 +37,7 @@ abstract class Entity
      *
      * @ORM\Column(name="created_at", type="datetime")
      * @Gedmo\Timestampable(on="create")
+     * @Assert\DateTime()
      */
     protected $createdAt;
 
@@ -43,6 +46,7 @@ abstract class Entity
      *
      * @ORM\Column(name="updated_at", type="datetime")
      * @Gedmo\Timestampable(on="update")
+     * @Assert\DateTime()
      */
     protected $updatedAt;
 

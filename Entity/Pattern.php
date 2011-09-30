@@ -12,23 +12,38 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern
  *
  * @ORM\Table(
- *     name="genemu_doctrine_extra_pattern"
+ *     name="genemu_doctrine_extra_pattern",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(
+ *             name="name",
+ *             columns={"name"}
+ *         )
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="pattern_idx", columns={"name"})
+ *     }
  * )
  * @ORM\Entity(
  *     repositoryClass="Genemu\Bundle\DoctrineExtraBundle\Entity\Repository\Pattern"
  * )
+ * @DoctrineAssert\UniqueEntity("name")
  */
 class Pattern extends Entity
 {
     /**
      * @var string $name
      *
-     * @ORM\Column(type="string", length="128")
+     * @ORM\Column(type="string", length="128", unique="true")
+     * @Assert\Type(type="string"),
+     * @Assert\NotNull(),
+     * @Assert\MaxLength(128)
      */
     protected $name;
 
@@ -36,6 +51,7 @@ class Pattern extends Entity
      * @var string $locale
      *
      * @ORM\Column(type="string", length="5")
+     * @Assert\Locale()
      */
     protected $locale;
 
@@ -44,11 +60,14 @@ class Pattern extends Entity
      *
      * @ORM\ManyToOne(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Routing",
-     *     inversedBy="patterns"
+     *     inversedBy="patterns",
+     *     cascade={"persist", "detach", "update", "merge"}
      * )
      * @ORM\JoinColumn(
      *     name="routing_id",
-     *     referencedColumnName="id"
+     *     referencedColumnName="id",
+     *     nullable="false",
+     *     onDelete="CASCADE"
      * )
      */
     protected $routing;
@@ -96,7 +115,7 @@ class Pattern extends Entity
     /**
      * get routing
      *
-     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routing
+     * @return Routing $routing
      */
     public function getRouting()
     {
@@ -106,7 +125,7 @@ class Pattern extends Entity
     /**
      * set routing
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routing
+     * @param Routing $routing
      */
     public function setRouting(Routing $routing)
     {
@@ -114,7 +133,7 @@ class Pattern extends Entity
     }
 
     /**
-     * to string
+     * toString
      *
      * @return string $name
      */

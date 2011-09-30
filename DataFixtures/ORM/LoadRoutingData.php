@@ -62,6 +62,10 @@ class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
     public function load($manager)
     {
         foreach ($this->routings as $name => $values) {
+            $pattern = new Pattern();
+            $pattern->setName($values[0]);
+            $pattern->setLocale('en');
+
             $routing = new Routing();
             $routing->setName('routing_'.$name);
             $routing->setPublish(true);
@@ -74,7 +78,7 @@ class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
                     $parameter->setName($nameP);
 
                     if (isset($params[0]) && $params[0]) {
-                        $parameter->setDefaultValue($params[0]);
+                        $parameter->setDefault($params[0]);
                     }
 
                     if (isset($params[1]) && $params[1]) {
@@ -82,16 +86,13 @@ class LoadRoutingData extends AbstractFixture implements OrderedFixtureInterface
                     }
 
                     $manager->persist($parameter);
-                    $routing->addRoutingParameters($parameter);
+                    $routing->addParameter($parameter);
                 }
             }
+
+            $routing->addPattern($pattern);
+
             $manager->persist($routing);
-
-            $pattern = new Pattern();
-            $pattern->setName($values[0]);
-            $pattern->setLocale('en');
-            $pattern->setRouting($routing);
-
             $manager->persist($pattern);
         }
 

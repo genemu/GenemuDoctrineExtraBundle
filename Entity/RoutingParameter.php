@@ -12,7 +12,7 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter
@@ -30,6 +30,9 @@ class RoutingParameter extends Entity
      * @var string $name
      *
      * @ORM\Column(type="string", length="128")
+     * @Assert\Type(type="string"),
+     * @Assert\NotNull(),
+     * @Assert\MaxLength(128)
      */
     protected $name;
 
@@ -37,33 +40,36 @@ class RoutingParameter extends Entity
      * @var string $defaultValue
      *
      * @ORM\Column(nullable="true", name="default_value", type="string", length="128")
+     * @Assert\Type(type="string"),
+     * @Assert\MaxLength(128)
      */
-    protected $defaultValue;
+    protected $default;
 
     /**
      * @var string $requirement
      *
      * @ORM\Column(nullable="true", type="string", length="128")
+     * @Assert\Type(type="string"),
+     * @Assert\MaxLength(128)
      */
     protected $requirement;
 
     /**
-     * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
+     * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routing
      *
-     * @ORM\ManyToMany(
+     * @ORM\ManyToOne(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Routing",
-     *     mappedBy="routingparameters"
+     *     inversedBy="parameters",
+     *     cascade={"persist", "detach", "update", "merge"}
+     * )
+     * @ORM\JoinColumn(
+     *     name="routing_id",
+     *     referencedColumnName="id",
+     *     nullable="false",
+     *     onDelete="CASCADE"
      * )
      */
-    protected $routings;
-
-    /**
-     * Construct
-     */
-    public function __construct()
-    {
-        $this->routings = new ArrayCollection();
-    }
+    protected $routing;
 
     /**
      * get name
@@ -86,23 +92,23 @@ class RoutingParameter extends Entity
     }
 
     /**
-     * get defaultValue
+     * get default
      *
-     * @return string $defaultValue
+     * @return string $default
      */
-    public function getDefaultValue()
+    public function getDefault()
     {
-        return $this->defaultValue;
+        return $this->default;
     }
 
     /**
-     * set defaultValue
+     * set default
      *
-     * @param string $defaultValue
+     * @param string $default
      */
-    public function setDefaultValue($defaultValue)
+    public function setDefault($default)
     {
-        $this->defaultValue = $defaultValue;
+        $this->default = $default;
     }
 
     /**
@@ -126,22 +132,22 @@ class RoutingParameter extends Entity
     }
 
     /**
-     * add routings
+     * add routing
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
+     * @param Routing $routin
      */
-    public function addRoutings(Routing $routings)
+    public function setRouting(Routing $routing)
     {
-        $this->routings->add($routings);
+        $this->routing = $routing;
     }
 
     /**
-     * get routings
+     * get routing
      *
-     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
+     * @return Routing $routing
      */
-    public function getRoutings()
+    public function getRouting()
     {
-        return $this->routings;
+        return $this->routing;
     }
 }

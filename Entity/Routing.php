@@ -12,6 +12,8 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Routing\Route;
 
@@ -19,11 +21,21 @@ use Symfony\Component\Routing\Route;
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Routing
  *
  * @ORM\Table(
- *     name="genemu_doctrine_extra_routing"
+ *     name="genemu_doctrine_extra_routing",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(
+ *             name="name",
+ *             columns={"name"}
+ *         )
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="routing_idx", columns={"name"})
+ *     }
  * )
  * @ORM\Entity(
  *     repositoryClass="Genemu\Bundle\DoctrineExtraBundle\Entity\Repository\Routing"
  * )
+ * @DoctrineAssert\UniqueEntity("name")
  */
 class Routing extends Entity
 {
@@ -31,20 +43,26 @@ class Routing extends Entity
      * @var string $name
      *
      * @ORM\Column(type="string", length="128", unique="true")
+     * @Assert\Type(type="string"),
+     * @Assert\NotNull(),
+     * @Assert\MaxLength(128)
      */
     protected $name;
 
     /**
-     * @var integer $ordering
+     * @var integer $order
      *
-     * @ORM\Column(nullable="true", type="integer")
+     * @ORM\Column(nullable="true", type="integer", name="ordering")
+     * @Assert\Type(type="integer")
      */
-    protected $ordering;
+    protected $order;
 
     /**
      * @var boolean $publish
      *
      * @ORM\Column(type="boolean")
+     * @Assert\Type(type="boolean"),
+     * @Assert\Notnull()
      */
     protected $publish;
 
@@ -54,44 +72,43 @@ class Routing extends Entity
      * @ORM\OneToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern",
      *     mappedBy="routing",
-     *     cascade={"all"}
+     *     cascade={"all"},
+     *     orphanRemoval="true"
      * )
+     * @ORM\OrderBy({"name" = "DESC"})
+     * @Assert\Valid()
      */
     protected $patterns;
 
     /**
-     * @var Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter $routingparameters
+     * @var Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter $parameters
      *
-     * @ORM\ManyToMany(
+     * @ORM\OneToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter",
-     *     inversedBy="routings",
-     *     cascade={"all"}
+     *     mappedBy="routing",
+     *     cascade={"all"},
+     *     orphanRemoval="true"
      * )
-     * @ORM\JoinTable(
-     *     name="genemu_doctrine_extra_routings_routingparameters",
-     *     joinColumns={@ORM\JoinColumn(
-     *         name="routing_id",
-     *         referencedColumnName="id"
-     *     )},
-     *     inverseJoinColumns={@ORM\JoinColumn(
-     *         name="routingparameter_id",
-     *         referencedColumnName="id"
-     *     )}
-     * )
+     * @ORM\OrderBy({"name" = "DESC"})
+     * @Assert\Valid()
      */
-    protected $routingparameters;
+    protected $parameters;
 
     /**
      * @var Genemu\Bundle\DoctrineExtraBundle\Entity\Method $method
      *
      * @ORM\ManyToOne(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Method",
-     *     inversedBy="routings"
+     *     inversedBy="routings",
+     *     cascade={"persist", "update", "detach", "merge"}
      * )
      * @ORM\JoinColumn(
      *     name="method_id",
-     *     referencedColumnName="id"
+     *     referencedColumnName="id",
+     *     nullable="false",
+     *     onDelete="CASCADE"
      * )
+     * @Assert\Valid()
      */
     protected $method;
 
@@ -100,12 +117,16 @@ class Routing extends Entity
      *
      * @ORM\ManyToOne(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\View",
-     *     inversedBy="routings"
+     *     inversedBy="routings",
+     *     cascade={"persist", "update", "detach", "merge"}
      * )
      * @ORM\JoinColumn(
      *     name="view_id",
-     *     referencedColumnName="id"
+     *     referencedColumnName="id",
+     *     nullable="false",
+     *     onDelete="CASCADE"
      * )
+     * @Assert\Valid()
      */
     protected $view;
 
@@ -131,7 +152,7 @@ class Routing extends Entity
     {
         $this->publish = false;
         $this->patterns = new ArrayCollection();
-        $this->routingparameters = new ArrayCollection();
+        $this->parameters = new ArrayCollection();
     }
 
     /**
@@ -157,7 +178,7 @@ class Routing extends Entity
     /**
      * get pattern
      *
-     * @return Doctrine\Collections\ArrayCollection $patterns
+     * @return ArrayCollection $patterns
      */
     public function getPatterns()
     {
@@ -169,7 +190,7 @@ class Routing extends Entity
      *
      * @param string $locale
      *
-     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern $pattern
+     * @return Pattern\null $pattern
      */
     public function getPattern($locale = 'en')
     {
@@ -183,33 +204,34 @@ class Routing extends Entity
     }
 
     /**
-     * set pattern
+     * add pattern
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Pattern $pattern
+     * @param Pattern $pattern
      */
     public function addPattern(Pattern $pattern)
     {
         $this->patterns->add($pattern);
+        $pattern->setRouting($this);
     }
 
     /**
-     * get ordering
+     * get order
      *
-     * @return integer $ordering
+     * @return integer $order
      */
-    public function getOrdering()
+    public function getOrder()
     {
-        return $this->ordering;
+        return $this->order;
     }
 
     /**
-     * set ordering
+     * set order
      *
-     * @param integer $ordering
+     * @param integer $order
      */
-    public function setOrdering($ordering)
+    public function setOrder($order)
     {
-        $this->ordering = $ordering;
+        $this->order = $order;
     }
 
     /**
@@ -241,29 +263,64 @@ class Routing extends Entity
     }
 
     /**
-     * add routingparameters
+     * add parameters
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter $routingparameters
+     * @param RoutingParameter $parameters
      */
-    public function addRoutingparameters(RoutingParameter $routingparameters)
+    public function addParameter(RoutingParameter $parameter)
     {
-        $this->routingparameters->add($routingparameters);
+        $this->parameters->add($parameter);
+        $parameter->setRouting($this);
     }
 
     /**
-     * get routingparameters
+     * get parameters
      *
-     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\RoutingParameter $routingparameters
+     * @return ArrayCollection $parameters
      */
-    public function getRoutingparameters()
+    public function getParameters()
     {
-        return $this->routingparameters;
+        return $this->parameters;
+    }
+
+    /**
+     * get defaults values
+     *
+     * @return array defaults values
+     */
+    public function getDefaults()
+    {
+        $defaults = array();
+        foreach ($this->parameters as $parameter) {
+            if ($default = $parameter->getDefault()) {
+                $defaults[$parameter->getName()] = $default;
+            }
+        }
+
+        return $defaults;
+    }
+
+    /**
+     * get requirements
+     *
+     * @return array $requirements
+     */
+    public function getRequirements()
+    {
+        $requirements = array();
+        foreach ($this->parameters as $parameter) {
+            if ($requirement = $parameter->getRequirement()) {
+                $requirements[$parameter->getName()] = $requirement;
+            }
+        }
+
+        return $requirements;
     }
 
     /**
      * set method
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Method $method
+     * @param Method $method
      */
     public function setMethod(Method $method)
     {
@@ -273,7 +330,7 @@ class Routing extends Entity
     /**
      * get method
      *
-     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Method $method
+     * @return Method $method
      */
     public function getMethod()
     {
@@ -283,7 +340,7 @@ class Routing extends Entity
     /**
      * set view
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\View $view
+     * @param View $view
      */
     public function setView(View $view)
     {
@@ -293,7 +350,7 @@ class Routing extends Entity
     /**
      * get view
      *
-     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\View $view
+     * @return View $view
      */
     public function getView()
     {
@@ -303,7 +360,7 @@ class Routing extends Entity
     /**
      * set cache
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Cache $cache
+     * @param Cache $cache
      */
     public function setCache(Cache $cache)
     {
@@ -313,7 +370,7 @@ class Routing extends Entity
     /**
      * get cache
      *
-     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Cache $cache
+     * @return Cache $cache
      */
     public function getCache()
     {
@@ -331,7 +388,7 @@ class Routing extends Entity
             return null;
         }
 
-        $requirements = array();
+        $requirements = $this->getRequirements();
         $defaults = array(
             '_controller' => $this->method->__toString()
         );
@@ -341,26 +398,11 @@ class Routing extends Entity
         }
 
         if ($this->cache) {
-            $defaults = array_merge($defaults, array(
-                '_genemu_cache' => true,
-                '_genemu_cache_public' => $this->cache->getPublic()?true:false,
-                '_genemu_cache_expires' => $this->cache->getExpires()?$this->cache->getExpires()->getTimestamp():null,
-                '_genemu_cache_smaxage' => $this->cache->getSmaxage(),
-                '_genemu_cache_maxage' => $this->cache->getMaxage()
-            ));
+            $defaults['_genemu_cache'] = true;
+            $defaults = array_merge($defaults, $this->cache->toArray());
         }
 
-        foreach ($this->routingparameters as $parameter) {
-            $name = $parameter->getName();
-
-            if ($default = $parameter->getDefaultValue()) {
-                $defaults[$name] = $default;
-            }
-
-            if ($requirement = $parameter->getRequirement()) {
-                $requirements[$name] = $requirement;
-            }
-        }
+        $defaults = array_merge($defaults, $this->getDefaults());
 
         $routes = array();
         foreach ($this->patterns as $pattern) {

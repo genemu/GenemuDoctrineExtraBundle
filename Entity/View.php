@@ -12,13 +12,17 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\View
  *
  * @ORM\Table(
- *     name="genemu_doctrine_extra_view"
+ *     name="genemu_doctrine_extra_view",
+ *     indexes={
+ *         @ORM\Index(name="view_idx", columns={"name", "format", "engine", "directory"})
+ *     }
  * )
  * @ORM\Entity(
  *     repositoryClass="Genemu\Bundle\DoctrineExtraBundle\Entity\Repository\View"
@@ -30,6 +34,9 @@ class View extends Entity
      * @var string $name
      *
      * @ORM\Column(type="string", length="128")
+     * @Assert\Type(type="string"),
+     * @Assert\NotNull(),
+     * @Assert\MaxLength(128)
      */
     protected $name;
 
@@ -37,6 +44,10 @@ class View extends Entity
      * @var string $format
      *
      * @ORM\Column(type="string", length="4")
+     * @Assert\Type(type="string"),
+     * @Assert\NotNull(),
+     * @Assert\MaxLength(4),
+     * @Assert\Choice(choices={"html", "css", "json", "js"})
      */
     protected $format;
 
@@ -44,6 +55,10 @@ class View extends Entity
      * @var string $engine
      *
      * @ORM\Column(type="string", length="4")
+     * @Assert\Type(type="string"),
+     * @Assert\NotNull(),
+     * @Assert\MaxLength(4),
+     * @Assert\Choice(choices={"twig", "php"})
      */
     protected $engine;
 
@@ -51,6 +66,8 @@ class View extends Entity
      * @var string $directory
      *
      * @ORM\Column(nullable="true", type="string", length="128")
+     * @Assert\Type(type="string"),
+     * @Assert\MaxLength(128)
      */
     protected $directory;
 
@@ -59,11 +76,14 @@ class View extends Entity
      *
      * @ORM\ManyToOne(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle",
-     *     inversedBy="views"
+     *     inversedBy="views",
+     *     cascade={"all"}
      * )
      * @ORM\JoinColumn(
      *     name="bundle_id",
-     *     referencedColumnName="id"
+     *     referencedColumnName="id",
+     *     nullable="false",
+     *     onDelete="CASCADE"
      * )
      */
     protected $bundle;
@@ -74,8 +94,9 @@ class View extends Entity
      * @ORM\OneToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Routing",
      *     mappedBy="view",
-     *     cascade={"all"}
+     *     cascade={"persist", "update", "detach", "merge"}
      * )
+     * @ORM\OrderBy({"order" = "DESC"})
      */
     protected $routings;
 
@@ -170,7 +191,7 @@ class View extends Entity
     /**
      * set bundle
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle $bundle
+     * @param Bundle $bundle
      */
     public function setBundle(Bundle $bundle)
     {
@@ -180,7 +201,7 @@ class View extends Entity
     /**
      * get bundle
      *
-     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle $bundle
+     * @return Bundle $bundle
      */
     public function getBundle()
     {
@@ -190,17 +211,17 @@ class View extends Entity
     /**
      * add routings
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
+     * @param Routing $routing
      */
-    public function addRoutings(Routing $routings)
+    public function addRouting(Routing $routing)
     {
-        $this->routings->add($routings);
+        $this->routings->add($routing);
     }
 
     /**
      * get routings
      *
-     * @return Doctrine\Common\Collections\ArrayCollection $routings
+     * @return ArrayCollection $routings
      */
     public function getRoutings()
     {

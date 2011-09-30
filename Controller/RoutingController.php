@@ -21,33 +21,15 @@ class RoutingController extends Controller
     public function indexAction($page = 1)
     {
         return array(
-            'routings' => $this->getDoctrine()->getRepository('GenemuDoctrineExtraBundle:Routing')->findRoutingAll(false)
+            'routings' => $this->getRepository()->findRoutingAll(false)
         );
     }
 
-    public function editAction(Routing $routing)
+    public function editAction($id)
     {
-        $patterns = $routing->getPatterns()->toArray();
+        $routing = $this->getRouting($id);
 
-        if (true === $form = $this->proccessForm($routing)) {
-            $dataPatterns = $routing->getPatterns();
-
-            foreach ($dataPatterns as $pattern) {
-                $pattern->setRouting($routing);
-            }
-
-            foreach ($patterns as $pattern) {
-                if (!$dataPatterns->contains($pattern)) {
-                    $this->getEm()->remove($pattern);
-                }
-            }
-
-            $this->getEm()->flush();
-
-            return $this->redirect($this->generateUrl('routing_index'));
-        }
-
-        return array('form' => $form);
+        return $this->proccessForm($routing);
     }
 
     public function newAction()
@@ -55,28 +37,17 @@ class RoutingController extends Controller
         $routing = new Routing();
         $routing->addPattern(new Pattern());
 
-        if (true === $form = $this->proccessForm($routing)) {
-            foreach ($routing->getPatterns() as $pattern) {
-                $pattern->setRouting($routing);
-            }
-
-            $this->getEm()->persist($routing);
-            $this->getEm()->flush();
-
-            return $this->redirect($this->generateUrl('routing_index'));
-        }
-
-        return array('form' => $form);
+        return $this->proccessForm($routing);
     }
 
-    public function moveAction(Routing $routing, $type)
+    public function moveAction($id, $type)
     {
-        $repository = $this->getDoctrine()->getRepository('GenemuDoctrineExtraBundle:Routing');
+        $routing = $this->getRouting($id);
 
         if ($type == 'up') {
-            $repository->moveUp($routing);
+            $this->getRepository()->moveUp($routing);
         } elseif ($type == 'down') {
-            $repository->moveDown($routing);
+            $this->getRepository()->moveDown($routing);
         }
 
         $this->getEm()->flush();
@@ -84,16 +55,20 @@ class RoutingController extends Controller
         return $this->redirect($this->generateUrl('routing_index'));
     }
 
-    public function publishAction(Routing $routing)
+    public function publishAction($id)
     {
+        $routing = $this->getRouting($id);
+
         $routing->tooglePublish();
         $this->getEm()->flush();
 
         return $this->redirect($this->generateUrl('routing_index'));
     }
 
-    public function removeAction(Routing $routing)
+    public function removeAction($id)
     {
+        $routing = $this->getRouting($id);
+
         $this->getEm()->remove($routing);
         $this->getEm()->flush();
 
@@ -105,6 +80,22 @@ class RoutingController extends Controller
         return $this->getDoctrine()->getEntityManager();
     }
 
+    protected function getRepository()
+    {
+        return $this->getDoctrine()->getRepository('GenemuDoctrineExtraBundle:Routing');
+    }
+
+    protected function getRouting($id)
+    {
+        $routing = $this->getRepository()->findOneById($id);
+
+        if (!$routing) {
+            $this->createNotFoundException();
+        }
+
+        return $routing;
+    }
+
     protected function proccessForm(Routing $routing)
     {
         $form = $this->createForm(new RoutingType(), $routing);
@@ -114,10 +105,20 @@ class RoutingController extends Controller
             $form->bindRequest($request);
 
             if ($form->isValid()) {
-                return true;
+                foreach ($routing->getPatterns() as $pattern) {
+                    $routing->addPattern($pattern);
+                }
+
+                foreach ($routing->getParameters() as $parameter) {
+                    $routing->addParameter($parameter);
+                }
+
+                $this->getEm()->flush();
+
+                return $this->redirect($this->generateUrl('routing_index'));
             }
         }
 
-        return $form->createView();
+        return array('form' => $form->createView());
     }
 }

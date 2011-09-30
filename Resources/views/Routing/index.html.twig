@@ -28,11 +28,11 @@
                     <span>{ </span>
                     <strong>{% trans %}_controller{% endtrans %}:</strong>
                     <span>{{ routing.method }}</span>
-                    {% for parameter in routing.routingparameters %}
-                        {% if parameter.defaultValue %}
+                    {% for parameter in routing.parameters %}
+                        {% if parameter.default %}
                             <span>, </span>
                             <strong>{{ parameter.name }}:</strong>
-                            <span>{{ parameter.defaultValue }}</span>
+                            <span>{{ parameter.default }}</span>
                         {% endif %}
                     {% endfor %}
                     <span> }</span>
@@ -40,7 +40,7 @@
                 <p class="name">
                     <strong class="option">{% trans %}requirements{% endtrans %}:</strong>
                     <span>{ </span>
-                    {% for parameter in routing.routingparameters %}
+                    {% for parameter in routing.parameters %}
                         {% if parameter.requirement %}
                             <strong>{{ parameter.name }}:</strong>
                             <span>{{ parameter.requirement }}{{ loop.last?'':', ' }}</span>
@@ -52,10 +52,15 @@
                     <strong class="option">{% trans %}template{% endtrans %}:</strong>
                     <span>{{ routing.view }}</span>
                 </p>
-                {% if routing.cache and (routing.cache.expires or routing.cache.smaxage or routing.cache.maxage) %}
+                {% if routing.cache and (routing.cache.public or routing.cache.expires or routing.cache.smaxage or routing.cache.maxage) %}
                 <p class="name">
                     <strong class="option">{% trans %}cache{% endtrans %}:</strong>
                     <span>{ </span>
+                    <strong>{% trans %}public{% endtrans %}:</strong>
+                    <span>{{ routing.cache.public?'true':'false' }}</span>
+                    {% if routing.cache.expires or routing.cache.smaxage or routing.cache.maxage %}
+                        <span>, </span>
+                    {% endif %}
                     {% if routing.cache.expires %}
                         <strong>{% trans %}expires{% endtrans %}:</strong>
                         <span>{{ routing.cache.expires|date('Y, d M') }}</span>

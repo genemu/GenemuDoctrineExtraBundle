@@ -12,13 +12,17 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Method
  *
  * @ORM\Table(
- *     name="genemu_doctrine_extra_method"
+ *     name="genemu_doctrine_extra_method",
+ *     indexes={
+ *         @ORM\Index(name="method_idx", columns={"name"})
+ *     }
  * )
  * @ORM\Entity(
  *     repositoryClass="Genemu\Bundle\DoctrineExtraBundle\Entity\Repository\Method"
@@ -30,6 +34,8 @@ class Method extends Entity
      * @var string $name
      *
      * @ORM\Column(type="string", length="128")
+     * @Assert\Type(type="string"),
+     * @Assert\MaxLength(128)
      */
     protected $name;
 
@@ -38,11 +44,14 @@ class Method extends Entity
      *
      * @ORM\ManyToOne(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Controller",
-     *     inversedBy="methods"
+     *     inversedBy="methods",
+     *     cascade={"all"}
      * )
      * @ORM\JoinColumn(
      *     name="controller_id",
-     *     referencedColumnName="id"
+     *     referencedColumnName="id",
+     *     nullable="false",
+     *     onDelete="CASCADE"
      * )
      */
     protected $controller;
@@ -53,8 +62,9 @@ class Method extends Entity
      * @ORM\OneToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Routing",
      *     mappedBy="method",
-     *     cascade={"all"}
+     *     cascade={"persist", "update", "detach", "merge"}
      * )
+     * @ORM\OrderBy({"order" = "DESC"})
      */
     protected $routings;
 
@@ -89,7 +99,7 @@ class Method extends Entity
     /**
      * set controller
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Controller $controller
+     * @param Controller $controller
      */
     public function setController(Controller $controller)
     {
@@ -99,7 +109,7 @@ class Method extends Entity
     /**
      * get controller
      *
-     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Controller $controller
+     * @return Controller $controller
      */
     public function getController()
     {
@@ -109,17 +119,17 @@ class Method extends Entity
     /**
      * add routings
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routings
+     * @param Routing $routing
      */
-    public function addRoutings(Routing $routings)
+    public function addRouting(Routing $routing)
     {
-        $this->routings->add($routings);
+        $this->routings->add($routing);
     }
 
     /**
      * get routings
      *
-     * @return Doctrine\Common\Collections\ArrayCollection $routings
+     * @return ArrayCollection $routings
      */
     public function getRoutings()
     {

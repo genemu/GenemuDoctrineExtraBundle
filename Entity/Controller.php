@@ -12,13 +12,17 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Controller
  *
  * @ORM\Table(
- *     name="genemu_doctrine_extra_controller"
+ *     name="genemu_doctrine_extra_controller",
+ *     indexes={
+ *         @ORM\Index(name="controller_idx", columns={"name"})
+ *     }
  * )
  * @ORM\Entity(
  *     repositoryClass="Genemu\Bundle\DoctrineExtraBundle\Entity\Repository\Controller"
@@ -30,6 +34,8 @@ class Controller extends Entity
      * @var string $name
      *
      * @ORM\Column(type="string", length="128")
+     * @Assert\Type(type="string"),
+     * @Assert\MaxLength(128)
      */
     protected $name;
 
@@ -38,11 +44,14 @@ class Controller extends Entity
      *
      * @ORM\ManyToOne(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle",
-     *     inversedBy="controllers"
+     *     inversedBy="controllers",
+     *     cascade={"all"}
      * )
      * @ORM\JoinColumn(
      *     name="bundle_id",
-     *     referencedColumnName="id"
+     *     referencedColumnName="id",
+     *     nullable="false",
+     *     onDelete="CASCADE"
      * )
      */
     protected $bundle;
@@ -55,6 +64,7 @@ class Controller extends Entity
      *     mappedBy="controller",
      *     cascade={"all"}
      * )
+     * @ORM\OrderBy({"name" = "DESC"})
      */
     protected $methods;
 
@@ -89,7 +99,7 @@ class Controller extends Entity
     /**
      * set bundle
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle $bundle
+     * @param Bundle $bundle
      */
     public function setBundle(Bundle $bundle)
     {
@@ -99,7 +109,7 @@ class Controller extends Entity
     /**
      * get bundle
      *
-     * @return Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle $bundle
+     * @return Bundle $bundle
      */
     public function getBundle()
     {
@@ -109,17 +119,17 @@ class Controller extends Entity
     /**
      * add methods
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Method $methods
+     * @param Method $method
      */
-    public function addMethods(Method $methods)
+    public function addMethod(Method $method)
     {
-        $this->methods->add($methods);
+        $this->methods->add($method);
     }
 
     /**
      * get methods
      *
-     * @return Doctrine\Common\Collections\ArrayCollection $methods
+     * @return ArrayCollection $methods
      */
     public function getMethods()
     {

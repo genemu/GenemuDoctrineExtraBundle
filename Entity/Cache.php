@@ -12,6 +12,7 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -30,6 +31,7 @@ class Cache extends Entity
      * @var boolean $public
      *
      * @ORM\Column(type="boolean", nullable="true")
+     * @Assert\Type("boolean")
      */
     protected $public;
 
@@ -37,6 +39,7 @@ class Cache extends Entity
      * @var string $name
      *
      * @ORM\Column(type="datetime", nullable="true")
+     * @Assert\DateTime()
      */
     protected $expires;
 
@@ -44,6 +47,7 @@ class Cache extends Entity
      * @var interger $smaxage
      *
      * @ORM\Column(type="integer", nullable="true")
+     * @Assert\Type("integer")
      */
     protected $smaxage;
 
@@ -51,6 +55,7 @@ class Cache extends Entity
      * @var integer $maxage
      *
      * @ORM\Column(type="integer", nullable="true")
+     * @Assert\Type("integer")
      */
     protected $maxage;
 
@@ -60,8 +65,9 @@ class Cache extends Entity
      * @ORM\OneToMany(
      *     targetEntity="Genemu\Bundle\DoctrineExtraBundle\Entity\Routing",
      *     mappedBy="cache",
-     *     cascade={"all"}
+     *     cascade={"persist", "update", "detach", "merge"}
      * )
+     * @ORM\OrderBy({"order" = "DESC"})
      */
     protected $routings;
 
@@ -156,7 +162,7 @@ class Cache extends Entity
     /**
      * add routings
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Routing $routing
+     * @param Routing $routing
      */
     public function addRouting(Routing $routing)
     {
@@ -166,10 +172,25 @@ class Cache extends Entity
     /**
      * get routings
      *
-     * @return Doctrine\Common\Collections\ArrayCollection $routings
+     * @return ArrayCollection $routings
      */
     public function getRoutings()
     {
         return $this->routings;
+    }
+
+    /**
+     * toArray
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            '_genemu_cache_public' => $this->public,
+            '_genemu_cache_expires' => $this->expires?$this->expires->getTimestamp():null,
+            '_genemu_cache_smaxage' => $this->smaxage,
+            '_genemu_cache_maxage' => $this->maxage
+        );
     }
 }

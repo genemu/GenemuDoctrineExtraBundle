@@ -12,17 +12,29 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Bundle
  *
  * @ORM\Table(
- *     name="genemu_doctrine_extra_bundle"
+ *     name="genemu_doctrine_extra_bundle",
+ *     uniqueConstraints={
+ *         @ORM\UniqueConstraint(
+ *             name="name",
+ *             columns={"name"}
+ *         )
+ *     },
+ *     indexes={
+ *         @ORM\Index(name="bundle_idx", columns={"name"})
+ *     }
  * )
  * @ORM\Entity(
  *     repositoryClass="Genemu\Bundle\DoctrineExtraBundle\Entity\Repository\Bundle"
  * )
+ * @DoctrineAssert\UniqueEntity("name")
  */
 class Bundle extends Entity
 {
@@ -30,6 +42,9 @@ class Bundle extends Entity
      * @var string $name
      *
      * @ORM\Column(type="string", length="128", unique="true")
+     * @Assert\NotNull(),
+     * @Assert\MaxLength(128),
+     * @Assert\Type(type="string")
      */
     protected $name;
 
@@ -41,6 +56,7 @@ class Bundle extends Entity
      *     mappedBy="bundle",
      *     cascade={"all"}
      * )
+     * @ORM\OrderBy({"name" = "DESC"})
      */
     protected $controllers;
 
@@ -52,6 +68,7 @@ class Bundle extends Entity
      *     mappedBy="bundle",
      *     cascade={"all"}
      * )
+     * @ORM\OrderBy({"directory" = "DESC", "name" = "DESC", "format" = "DESC", "engine" = "DESC"})
      */
     protected $views;
 
@@ -87,17 +104,17 @@ class Bundle extends Entity
     /**
      * add controllers
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\Controller $controllers
+     * @param Controller $controller
      */
-    public function addControllers(Controller $controllers)
+    public function addController(Controller $controller)
     {
-        $this->controllers->add($controllers);
+        $this->controllers->add($controller);
     }
 
     /**
      * get controllers
      *
-     * @return Doctrine\Common\Collections\ArrayCollection $controllers
+     * @return ArrayCollection $controllers
      */
     public function getControllers()
     {
@@ -107,17 +124,17 @@ class Bundle extends Entity
     /**
      * add views
      *
-     * @param Genemu\Bundle\DoctrineExtraBundle\Entity\View $views
+     * @param View $view
      */
-    public function addViews(View $views)
+    public function addView(View $view)
     {
-        $this->views->add($views);
+        $this->views->add($view);
     }
 
     /**
      * get views
      *
-     * @return Doctrine\Common\Collections\ArrayCollection $views
+     * @return ArrayCollection $views
      */
     public function getViews()
     {
