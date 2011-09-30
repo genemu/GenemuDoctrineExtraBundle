@@ -42,8 +42,7 @@
                 </p>
                 {% endif %}
                 <p class="name">
-                    <strong class="option">{% trans %}template{% endtrans %}:</strong>
-                    <span>{{ routing.view }}</span>
+                    <span><strong class="option">{% trans %}template{% endtrans %}:</strong> {{ routing.view }}</span>
                 </p>
                 {% if routing.cache and (routing.cache.toArray|length > 1 or routing.cache.toArray.public) %}
                 <p class="name">
@@ -60,19 +59,19 @@
                 {% endif %}
             </div>
             <div class="action">
-                <a class="icon-32 moveup" title="{% trans %}Move up{% endtrans %}" href="{{ path('routing_move', {'id': routing.id, 'type': 'up'}) }}">
+                <a class="icon-32 moveup" title="{% trans %}Move up{% endtrans %}" href="{{ doctrine('routing_move', {'id': routing.id, 'type': 'up'}) }}">
                     {% trans %}MoveUp{% endtrans %}
                 </a>
-                <a class="icon-32 movedown" title="{% trans %}Move down{% endtrans %}" href="{{ path('routing_move', {'id': routing.id, 'type': 'down'}) }}">
+                <a class="icon-32 movedown" title="{% trans %}Move down{% endtrans %}" href="{{ doctrine('routing_move', {'id': routing.id, 'type': 'down'}) }}">
                     {% trans %}MoveDown{% endtrans %}
                 </a>
-                <a class="icon-32 {{ publish|lower }}" title="{{ publish|trans }}" href="{{ path('routing_publish', {'id': routing.id}) }}">
+                <a class="icon-32 {{ publish|lower }}" title="{{ publish|trans }}" href="{{ doctrine('routing_publish', {'id': routing.id}) }}">
                     {{ publish|trans }}
                 </a>
-                <a class="icon-32 edit" title="{% trans %}Edit{% endtrans %}" href="{{ path('routing_edit', {'id': routing.id}) }}">
+                <a class="icon-32 edit" title="{% trans %}Edit{% endtrans %}" href="{{ doctrine('routing_edit', {'id': routing.id}) }}">
                     {% trans %}Edit{% endtrans %}
                 </a>
-                <a class="icon-32 remove" onclick="return confirm('{% trans %}Confirm delete routing{% endtrans %}');" title="{% trans %}Remove{% endtrans %}" href="{{ path('routing_remove', {'id': routing.id}) }}">
+                <a class="icon-32 remove" onclick="return confirm('{% trans %}Confirm delete routing{% endtrans %}');" title="{% trans %}Remove{% endtrans %}" href="{{ doctrine('routing_remove', {'id': routing.id}) }}">
                     {% trans %}Remove{% endtrans %}
                 </a>
             </div>
@@ -80,7 +79,7 @@
     {% endfor %}
 </ul>
 <div class="actions">
-    <a href="{{ path('routing_new') }}" title="{% trans %}Add routing{% endtrans %}">
+    <a href="{{ doctrine('routing_new') }}" title="{% trans %}Add routing{% endtrans %}">
         <span class="icon-16 add"></span>
         <span>{% trans %}Add routing{% endtrans %}</span>
     </a>

@@ -87,7 +87,7 @@ class DoctrineRouteLoader implements LoaderInterface
                 }
 
                 $collection->add($name.'.'.$locale, $route);
-                $collection->add($name.'.'.$locale.'_'.strtoupper($name), $route);
+                $collection->add($name.'.'.$locale.'_'.strtoupper($locale), $route);
             }
         }
 

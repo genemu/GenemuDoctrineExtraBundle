@@ -28,8 +28,8 @@ class GenemuDoctrineExtraExtension extends Extension
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('template.xml');
-        $loader->load('cache.xml');
         $loader->load('routing.xml');
         $loader->load('twig.xml');
+        $loader->load('cache.xml');
     }
 }

@@ -21,6 +21,7 @@ class DoctrineExtension extends \Twig_Extension
 {
     protected $router;
     protected $session;
+    protected $debug;
 
     /**
      * Construct
@@ -28,10 +29,11 @@ class DoctrineExtension extends \Twig_Extension
      * @param Router $router
      * @param Session $session
      */
-    public function __construct(Router $router, Session $session)
+    public function __construct(Router $router, Session $session, $debug)
     {
         $this->router = $router;
         $this->session = $session;
+        $this->debug = $debug;
     }
 
     /**
@@ -40,7 +42,7 @@ class DoctrineExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'path' => new \Twig_Function_Method($this, 'doDoctrineFilter')
+            'doctrine' => new \Twig_Function_Method($this, 'doDoctrineFilter')
         );
     }
 
@@ -56,6 +58,12 @@ class DoctrineExtension extends \Twig_Extension
      */
     public function doDoctrineFilter($name, $parameters = array(), $absolute = false)
     {
+        if (!$this->debug) {
+            if ($this->router->getRouteCollection()->get($name.'.'.$this->session->getLocale())) {
+                $name = $name.'.'.$this->session->getLocale();
+            }
+        }
+
         return $this->router->generate($name, $parameters, $absolute);
     }
 

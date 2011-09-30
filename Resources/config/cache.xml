@@ -11,6 +11,7 @@
     <services>
         <service id="genemu.listener.cache" class="%genemu.listener.cache.class%">
             <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
+            <argument type="service" id="genemu.resource.routing" />
         </service>
     </services>
 

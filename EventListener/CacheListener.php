@@ -13,12 +13,20 @@ namespace Genemu\Bundle\DoctrineExtraBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
+use Genemu\Bundle\DoctrineExtraBundle\Config\Resource\DoctrineResource;
 
 /**
  * @author Olivier Chauvel <olchauvel@gmail.com>
  */
 class CacheListener
 {
+    protected $resource;
+
+    public function __construct(DoctrineResource $resource)
+    {
+        $this->resource = $resource;
+    }
+
     /**
      * {@inheritedoc}
      */
@@ -41,12 +49,6 @@ class CacheListener
             $response->setExpires($date);
         }
 
-        if ($lastmodified = $request->attributes->get('_genemu_cache_lastmodified')) {
-            $date = \DateTime::createFromFormat('U', $lastmodified, new \DateTimeZone('UTC'));
-
-            //$response->setLastModified($date);
-        }
-
         if ($smaxage = $request->attributes->get('_genemu_cache_smaxage')) {
             $response->setSharedMaxAge($smaxage);
         }
@@ -58,6 +60,11 @@ class CacheListener
         if ($request->attributes->get('_genemu_cache_public')) {
             $response->setPublic();
         }
+
+        //$timestamp = file_get_contents($this->resource->getResource());
+        //$date = \DateTime::createFromFormat('U', $timestamp, new \DateTimeZone('UTC'));
+
+        //$response->setLastModified($date);
 
         return $response;
     }

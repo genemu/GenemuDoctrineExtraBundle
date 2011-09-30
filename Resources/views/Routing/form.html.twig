@@ -1,7 +1,7 @@
 <form action="" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
     <div class="form_actions">
-        <a href="{{ path('routing_index') }}" title="{% trans %}Routing manager{% endtrans %}">
+        <a href="{{ doctrine('routing_index') }}" title="{% trans %}Routing manager{% endtrans %}">
             <span class="icon-16 back"></span>
             <span>{% trans %}Routing Manager{% endtrans %}</span>
         </a>
