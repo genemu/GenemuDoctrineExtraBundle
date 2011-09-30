@@ -113,6 +113,7 @@ class RoutingController extends Controller
                     $routing->addParameter($parameter);
                 }
 
+                $this->getEm()->persist($routing);
                 $this->getEm()->flush();
 
                 return $this->redirect($this->generateUrl('routing_index'));

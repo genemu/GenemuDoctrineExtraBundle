@@ -399,7 +399,9 @@ class Routing extends Entity
 
         if ($this->cache) {
             $defaults['_genemu_cache'] = true;
-            $defaults = array_merge($defaults, $this->cache->toArray());
+            foreach ($this->cache->toArray() as $name => $cache) {
+                $defaults['_genemu_cache_'.$name] = $cache;
+            }
         }
 
         $defaults = array_merge($defaults, $this->getDefaults());

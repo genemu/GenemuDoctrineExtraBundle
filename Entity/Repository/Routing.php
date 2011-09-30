@@ -91,7 +91,7 @@ class Routing extends EntityRepository
             ->addSelect('partial method.{id, name}')
             ->addSelect('partial controller.{id, name}')
             ->addSelect('partial bundle_controller.{id, name}')
-            ->addSelect('partial cache.{id, expires, smaxage, maxage}');
+            ->addSelect('partial cache.{id, expires, smaxage, maxage, public}');
 
         return $qb;
     }

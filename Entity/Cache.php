@@ -186,11 +186,21 @@ class Cache extends Entity
      */
     public function toArray()
     {
-        return array(
-            '_genemu_cache_public' => $this->public,
-            '_genemu_cache_expires' => $this->expires?$this->expires->getTimestamp():null,
-            '_genemu_cache_smaxage' => $this->smaxage,
-            '_genemu_cache_maxage' => $this->maxage
-        );
+        $cache = array('public' => $this->public?true:false);
+
+        $now = new \DateTime();
+        if ($this->expires && $this->expires > $now) {
+            $cache['expires'] = $this->expires->getTimestamp();
+        }
+
+        if ($this->smaxage) {
+            $cache['smaxage'] = $this->smaxage;
+        }
+
+        if ($this->maxage) {
+            $cache['maxage'] = $this->maxage;
+        }
+
+        return $cache;
     }
 }

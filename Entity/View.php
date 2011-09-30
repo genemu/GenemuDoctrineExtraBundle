@@ -47,7 +47,7 @@ class View extends Entity
      * @Assert\Type(type="string"),
      * @Assert\NotNull(),
      * @Assert\MaxLength(4),
-     * @Assert\Choice(choices={"html", "css", "json", "js"})
+     * @Assert\Choice(choices={"html", "css", "json", "js", "txt", "xml", "rdf", "atom", "jpeg", "jpg", "png", "gif"})
      */
     protected $format;
 
