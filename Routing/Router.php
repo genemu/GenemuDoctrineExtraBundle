@@ -15,6 +15,8 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router as BaseRouter;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\Routing\RouteCollection;
+use Genemu\Bundle\DoctrineExtraBundle\Config\ConfigDoctrineCache;
 
 /**
  * This Router creates the Loader when the cache is empty or database is modify
@@ -23,7 +25,7 @@ use Symfony\Component\Config\ConfigCache;
  */
 class Router extends BaseRouter
 {
-    protected $cache;
+    protected $routing;
 
     /**
      * {@inheritedoc}
@@ -32,9 +34,8 @@ class Router extends BaseRouter
     {
         parent::__construct($container, $resource, $options, $context, $defaults);
 
-        $this->cache = $container->get('genemu.resource.routing');
+        $this->routing = $container->get('genemu.resource.routing');
     }
-
     /**
      * {@inheritdoc}
      */
@@ -52,27 +53,6 @@ class Router extends BaseRouter
     }
 
     /**
-     * Verify if modif file or page database
-     *
-     * @param string      $flie
-     * @param ConfigCache $class
-     *
-     * @return boolean
-     */
-    protected function isFresh($file)
-    {
-        if (!is_file($file)) {
-            return false;
-        }
-
-        if (!$this->cache->isFresh(filemtime($file))) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Create and return file cache
      *
      * @param string $key
@@ -85,17 +65,19 @@ class Router extends BaseRouter
             return $this->$key;
         }
 
-        if (null === $this->options['cache_dir'] || null === $this->options[$key.'_cache_class']) {
+        if (
+            null === $this->options['cache_dir'] ||
+            null === $this->options[$key.'_cache_class']
+        ) {
             $class = $this->options[$key.'_class'];
+
             return $this->$key = new $class($this->getRouteCollection(), $this->context, $this->defaults);
         }
 
         $class = $this->options[$key.'_cache_class'];
         $cache = new ConfigCache($this->options['cache_dir'].'/'.$class.'.php', $this->options['debug']);
 
-        if (!$this->isFresh($cache)) {
-            $this->cache->updated();
-
+        if (!$this->routing->isFreshCache($cache)) {
             $dumper = new $this->options[$key.'_dumper_class']($this->getRouteCollection());
 
             $options = array('class' => $class, 'base_class' => $this->options[$key.'_base_class']);

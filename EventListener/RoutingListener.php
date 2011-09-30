@@ -42,9 +42,7 @@ class RoutingListener
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        if ($this->checkEntity($args->getEntity())) {
-            $this->resource->updated();
-        }
+        $this->checkEntity($args->getEntity());
     }
 
     /**
@@ -54,9 +52,7 @@ class RoutingListener
      */
     public function postUpdate(LifecycleEventArgs $args)
     {
-        if ($this->checkEntity($args->getEntity())) {
-            $this->resource->updated();
-        }
+        $this->checkEntity($args->getEntity());
     }
 
     /**
@@ -66,9 +62,7 @@ class RoutingListener
      */
     public function postRemove(LifecycleEventArgs $args)
     {
-        if ($this->checkEntity($args->getEntity())) {
-            $this->resource->updated();
-        }
+        $this->checkEntity($args->getEntity());
     }
 
     /**
@@ -84,9 +78,7 @@ class RoutingListener
             $entity instanceof RoutingParameter ||
             $entity instanceof Cache
         ) {
-            return true;
+            $this->resource->updated($entity->getUpdatedAt()->getTimestamp());
         }
-
-        return false;
     }
 }

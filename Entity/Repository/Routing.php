@@ -83,7 +83,7 @@ class Routing extends EntityRepository
             ->leftJoin('method.controller', 'controller')
             ->leftJoin('controller.bundle', 'bundle_controller');
 
-        $qb->select('partial routing.{id, name, order, publish}')
+        $qb->select('partial routing.{id, name, order, publish, updatedAt}')
             ->addSelect('partial patterns.{id, name, locale}')
             ->addSelect('partial parameters.{id, name, default, requirement}')
             ->addSelect('partial view.{id, name, format, engine, directory}')

@@ -14,6 +14,7 @@ namespace Genemu\Bundle\DoctrineExtraBundle\Routing\Loader;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Bundle\DoctrineBundle\Registry;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Genemu\Bundle\DoctrineExtraBundle\Config\Resource\DoctrineResource;
 
@@ -48,11 +49,45 @@ class DoctrineRouteLoader implements LoaderInterface
         $repository = $this->registry->getRepository($entityName);
 
         $collection = new RouteCollection();
-        $collection->addResource($this->resource->getResource());
+        $collection->addResource($this->resource);
 
         foreach ($repository->findRoutingAll() as $routing) {
-            foreach ($routing->getRoutes() as $name => $route) {
-                $collection->add($name, $route);
+            $name = $routing->getName();
+            $requirements = $routing->getRequirements();
+            $defaults = array(
+                '_controller' => $routing->getMethod()->__toString()
+            );
+
+            if ($template = $routing->getView()) {
+                $defaults['_genemu_template'] = $template->__toString();
+            }
+
+            if ($cache = $routing->getCache()) {
+                $defaults = array_merge($defaults, array(
+                    '_genemu_cache' => true,
+                    '_genemu_cache_lastmodified' => $routing->getUpdatedAt()->getTimestamp()
+                ));
+
+                foreach ($cache->toArray() as $key => $value) {
+                    $defaults['_genemu_cache_'.$key] = $value;
+                }
+            }
+
+            $defaults = array_merge($defaults, $routing->getDefaults());
+
+            foreach ($routing->getPatterns() as $pattern) {
+                $locale = $pattern->getLocale();
+
+                $defaults['_genemu_culture'] = $locale;
+
+                $route = new Route($pattern->getName(), $defaults, $requirements);
+
+                if ($locale == 'en') {
+                    $collection->add($name, $route);
+                }
+
+                $collection->add($name.'.'.$locale, $route);
+                $collection->add($name.'.'.$locale.'_'.strtoupper($name), $route);
             }
         }
 

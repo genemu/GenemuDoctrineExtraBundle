@@ -41,6 +41,12 @@ class CacheListener
             $response->setExpires($date);
         }
 
+        if ($lastmodified = $request->attributes->get('_genemu_cache_lastmodified')) {
+            $date = \DateTime::createFromFormat('U', $lastmodified, new \DateTimeZone('UTC'));
+
+            //$response->setLastModified($date);
+        }
+
         if ($smaxage = $request->attributes->get('_genemu_cache_smaxage')) {
             $response->setSharedMaxAge($smaxage);
         }

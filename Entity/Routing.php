@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Routing\Route;
+use Genemu\Bundle\DoctrineExtraBundle\Model\RoutingInterface;
 
 /**
  * Genemu\Bundle\DoctrineExtraBundle\Entity\Routing
@@ -37,7 +37,7 @@ use Symfony\Component\Routing\Route;
  * )
  * @DoctrineAssert\UniqueEntity("name")
  */
-class Routing extends Entity
+class Routing extends Entity implements RoutingInterface
 {
     /**
      * @var string $name
@@ -375,52 +375,5 @@ class Routing extends Entity
     public function getCache()
     {
         return $this->cache;
-    }
-
-    /**
-     * get routes
-     *
-     * @return array $routes
-     */
-    public function getRoutes()
-    {
-        if (!$this->method) {
-            return null;
-        }
-
-        $requirements = $this->getRequirements();
-        $defaults = array(
-            '_controller' => $this->method->__toString()
-        );
-
-        if ($this->view) {
-            $defaults['_genemu_template'] = $this->view->__toString();
-        }
-
-        if ($this->cache) {
-            $defaults['_genemu_cache'] = true;
-            foreach ($this->cache->toArray() as $name => $cache) {
-                $defaults['_genemu_cache_'.$name] = $cache;
-            }
-        }
-
-        $defaults = array_merge($defaults, $this->getDefaults());
-
-        $routes = array();
-        foreach ($this->patterns as $pattern) {
-            $locale = $pattern->getLocale();
-            $defaults['_genemu_culture'] = $locale;
-
-            $route = new Route($pattern->getName(), $defaults, $requirements);
-
-            if ($locale == 'en') {
-                $routes[$this->name] = $route;
-            }
-
-            $routes[$this->name.'.'.$locale] = $route;
-            $routes[$this->name.'.'.$locale.'_'.strtoupper($locale)] = $route;
-        }
-
-        return $routes;
     }
 }

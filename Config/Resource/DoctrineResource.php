@@ -12,15 +12,15 @@
 namespace Genemu\Bundle\DoctrineExtraBundle\Config\Resource;
 
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\Config\Resource\ResourceInterface;
 
 /**
  * Doctrine Resource
  *
  * @author Olivier Chauvel <olchauvel@gmail.com>
  */
-class DoctrineResource
+class DoctrineResource implements ResourceInterface
 {
     protected $file;
     protected $cache;
@@ -31,11 +31,21 @@ class DoctrineResource
         $this->cache = new ConfigCache($this->file, $kernel->isDebug());
     }
 
-    public function updated()
+    public function updated($timestamp)
     {
-        $date = new \DateTime();
+        $this->cache->write($timestamp);
+    }
 
-        $this->cache->write($date->getTimestamp());
+    public function isFreshCache(ConfigCache $cache)
+    {
+        $timestamp = filemtime($cache->__toString());
+        if (!$this->isFresh($timestamp) || !$cache->isFresh()) {
+            $this->updated($timestamp);
+
+            return false;
+        }
+
+        return true;
     }
 
     public function isFresh($timestamp)
@@ -44,7 +54,10 @@ class DoctrineResource
             return false;
         }
 
-        if (filemtime($this->file) > $timestamp) {
+        if (
+            filemtime($this->file) > $timestamp ||
+            file_get_contents($this->file) > $timestamp
+        ) {
             return false;
         }
 
@@ -53,6 +66,11 @@ class DoctrineResource
 
     public function getResource()
     {
-        return new FileResource($this->file);
+        return $this->file;
+    }
+
+    public function __toString()
+    {
+        return $this->file;
     }
 }
