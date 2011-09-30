@@ -77,17 +77,21 @@ class DoctrineRouteLoader implements LoaderInterface
 
             foreach ($routing->getPatterns() as $pattern) {
                 $locale = $pattern->getLocale();
-
-                $defaults['_genemu_culture'] = $locale;
-
-                $route = new Route($pattern->getName(), $defaults, $requirements);
+                $url = $pattern->getName();
 
                 if ($locale == 'en') {
-                    $collection->add($name, $route);
+                    $collection->add($name, new Route($url, array_merge(
+                        $defaults, array('_genemu_locale' => 'en')
+                    ), $requirements));
                 }
 
-                $collection->add($name.'.'.$locale, $route);
-                $collection->add($name.'.'.$locale.'_'.strtoupper($locale), $route);
+                $collection->add($name.'.'.$locale, new Route($url, array_merge(
+                    $defaults, array('_genemu_locale' => $locale)
+                ), $requirements));
+
+                $collection->add($name.'.'.$locale.'_'.strtoupper($locale), new Route($url, array_merge(
+                    $defaults, array('_genemu_locale' => $locale.'_'.strtoupper($locale))
+                ), $requirements));
             }
         }
 

@@ -43,7 +43,6 @@ class TemplateListener
     {
         $request = $event->getRequest();
         $parameters = $event->getControllerResult();
-        $locale = $this->session->getLocale();
 
         $template = $request->get('_genemu_template');
         if (!$parameters) {
@@ -54,7 +53,12 @@ class TemplateListener
             return $parameters;
         }
 
-        $parameters['culture'] = substr($locale, 0, strpos($locale, '_'));
+        if ($request->get('_genemu_locale') && '/' != $request->getPathInfo()) {
+            $this->session->setLocale($request->get('_genemu_locale'));
+        }
+
+        $locale = $this->session->getLocale();
+        $parameters['culture'] = ($pos = strpos($locale, '_'))?substr($locale, 0, $pos):$locale;
 
         $event->setResponse(new Response($this->templating->render($template, $parameters)));
     }
